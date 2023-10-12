@@ -1,18 +1,18 @@
-import { MembershipPlan } from "../models/MembershipPlan";
-import {MembershipPlan as MembershipPlanType} from '../types'
+import { Subscription } from "../models/Subscription";
+import {Subscription as SubscriptionType} from '../types'
 
-class MembershipPlanDal {
+class SubscriptionDal {
     create(payload:any) {
         return new Promise((resolve, reject) => {
-            MembershipPlan.create(payload)
-                .then((result:MembershipPlanType) => resolve(result))
+            Subscription.create(payload)
+                .then((result:SubscriptionType) => resolve(result))
                 .catch((error:any) => reject(error));
         });
     }
 
     findAll = (query:any) => {
         return new Promise((resolve, reject) => {
-            MembershipPlan.findAll({
+            Subscription.findAll({
                 where: query,
                 // orderBy:[
                 //     {
@@ -20,17 +20,17 @@ class MembershipPlanDal {
                 //     }
                 // ]
             })
-                .then((result:MembershipPlanType[]) => resolve(result))
+                .then((result:SubscriptionType[]) => resolve(result))
                 .catch((error:any) => reject(error));
         })
     }
 
     findOne = (query:any) => {
         return new Promise((resolve, reject) => {
-            MembershipPlan.findOne({
+            Subscription.findOne({
                 where: query,
             })
-                .then((result:MembershipPlanType) => {
+                .then((result:SubscriptionType) => {
                     resolve(result)})
                 .catch((error:any) => {
                     reject(error)
@@ -40,10 +40,10 @@ class MembershipPlanDal {
 
     findById = (id: string) => {
         return new Promise((resolve, reject) => {
-            MembershipPlan.findOne({
+            Subscription.findOne({
                 where: { id },
             })
-                .then((result: MembershipPlanType) => {
+                .then((result: SubscriptionType) => {
                     resolve(result)
                 })
                 .catch((error: any) => {
@@ -52,16 +52,16 @@ class MembershipPlanDal {
         });
     }
 
-    update = (membershipPlan:MembershipPlan, payload:any) => {
+    update = (subscription:Subscription, payload:any) => {
         return new Promise((resolve, reject) => {
-            if (membershipPlan) {
+            if (subscription) {
                 // if (payload.firstName) subscription.firstName = payload.firstName;
                 // if (payload.lastName) subscription.lastName = payload.lastName;
                 // if (payload.email) subscription.email = payload.email;
 
 
-                membershipPlan.save()
-                    .then((result:MembershipPlanType) => {
+               subscription.save()
+                    .then((result:SubscriptionType) => {
                         if (result) {
                             resolve(result)
                         } else {
@@ -79,7 +79,7 @@ class MembershipPlanDal {
 
     remove = (query:any) => {
         return new Promise((resolve, reject) => {
-            MembershipPlan.destroy({ where: query })
+            Subscription.destroy({ where: query })
                 .then((result:any) => {
                     if (result) {
                         resolve("Deleted successfully!")
@@ -92,4 +92,4 @@ class MembershipPlanDal {
     }
 }
 
-export default new MembershipPlanDal;
+export default new SubscriptionDal;

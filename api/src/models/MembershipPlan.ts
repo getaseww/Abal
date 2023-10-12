@@ -5,7 +5,7 @@ export class MembershipPlan extends Model {
     public name!: string;
     public description!: string | null;
     public duration!:string;
-    public max_members!:number|null;
+    public maxMembers!:number|null;
     public price!: number;
     public image!: string | null;
     public readonly createdAt!: Date;
@@ -32,7 +32,7 @@ export default (sequelize: Sequelize) => {
                 type: DataTypes.STRING,
                 allowNull: true,
             },
-            max_members: {
+            maxMembers: {
                 type: DataTypes.INTEGER,
                 allowNull: true,
             },

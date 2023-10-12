@@ -4,7 +4,7 @@ export class User extends Model {
     public id!: number;
     public firstName!: string;    
     public lastName!: string;   
-    public business_name!: string;
+    public businessName!: string;
     public email!: string;
     public password!: string;
     public isAdmin!: string|null;
@@ -24,7 +24,7 @@ export class User extends Model {
           type: DataTypes.STRING,
           allowNull: false,
         },
-        business_name: {
+        businessName: {
           type: DataTypes.STRING,
           allowNull: false,
         },

@@ -2,17 +2,34 @@ export type User = {
     id?: string,
     firstName: string,
     lastName: string,
-    phoneNumber: string,
-    sex: string,
-    email?: string,
+    businessName: string,
+    email: string,
     password: string,
-    roleId: string,
     createdAt?: Date,
     updatedAt: Date,
     // role?: Role,
     // class?:Class,
     // instructor?:User,
     // payment?:Payment,
+}
+
+export type Member={
+    userId:number,
+    firstName:string,
+    lastName:string,
+    email:string,
+    phoneNumber:string,
+    password:string,
+    sex:string,
+}
+
+export type Subscription={
+    userId:number,
+    memberId:number,
+    membershipPlanId:number,
+    startDate:Date,
+    endDate:Date,
+    status:string,
 }
 
 export type Role = {
@@ -41,9 +58,8 @@ export type Payment = {
     amount: number,
     trx_ref: string,
     status: string,
-    membershipPlanId: string,
-    userId: string,
-
+    subscriptionId: number,
+    memberId: number,
     createdAt?: Date,
     updatedAt: Date,
 
@@ -52,8 +68,10 @@ export type Payment = {
 
 export type MembershipPlan = {
     id?: string,
-    planName: string,
+    name: string,
     description:string,
+    duration:string,
+    maxMembers:number,
     price:number,
     createdAt?: Date,
     updatedAt?: Date,
