@@ -1,14 +1,14 @@
 import async from 'async'
 import CustomError from '../errors/customError';
-import { MembershipPlan } from '../models/MembershipPlan';
-import MembershipPlanDal from '../dals/MembershipPlan.dal';
+import { Member } from '../models/Member';
+import MemberDal from '../dals/Member.dal';
 
-class MembershipPlanService {
-    create(payload: MembershipPlan) {
+class MemberService {
+    create(payload: Member) {
         return new Promise((resolve, reject) => {
             async.waterfall([
                 (done: Function) => {
-                    MembershipPlanDal.create(payload).then((result) => done(null, result))
+                    MemberDal.create(payload).then((result) => done(null, result))
                         .catch((error) => {
                             console.log(error);
                             done(error, null)
@@ -23,7 +23,7 @@ class MembershipPlanService {
 
     findAll(query: any) {
         return new Promise((resolve, reject) => {
-            MembershipPlanDal.findAll(query).then((result) => resolve(result))
+            MemberDal.findAll(query).then((result) => resolve(result))
                 .catch((error) => reject(new CustomError(error, 500, "Internal Server Error")))
         })
     }
@@ -32,14 +32,14 @@ class MembershipPlanService {
 
     findById(id:any) {
         return new Promise((resolve, reject) => {
-            MembershipPlanDal.findById(id).then((result) => resolve(result))
+            MemberDal.findById(id).then((result) => resolve(result))
                 .catch((error) => reject(new CustomError(error, 500, "Internal Server Error")))
         })
     }
 
     findOne(query:any) {
         return new Promise((resolve, reject) => {
-            MembershipPlanDal.findOne(query).then((result) => resolve(result))
+            MemberDal.findOne(query).then((result) => resolve(result))
                 .catch((error) => reject(new CustomError(error, 500, "Internal Server Error")))
         })
     }
@@ -48,12 +48,12 @@ class MembershipPlanService {
         return new Promise((resolve, reject) => {
             async.waterfall([
                 (done:Function) => {
-                    MembershipPlanDal.findOne({ id })
-                        .then((membershipPlan) => {
-                            if (membershipPlan) {
-                                done(null, membershipPlan)
+                    MemberDal.findOne({ id })
+                        .then((member) => {
+                            if (member) {
+                                done(null, member)
                             } else {
-                                done(new CustomError("Membership Plan not found", 404, "Not Found"), null);
+                                done(new CustomError("Member not found", 404, "Not Found"), null);
                             }
                         })
                         .catch((error) => {
@@ -61,13 +61,13 @@ class MembershipPlanService {
                             done(new CustomError(error, 500, "Internal Server Error"), null)
                         })
                 },
-                (membershipPlan:MembershipPlan, done:Function) => {
-                    MembershipPlanDal.update(membershipPlan, payload)
+                (member:Member, done:Function) => {
+                    MemberDal.update(member, payload)
                         .then((result) => {
                             if (result) {
                                 done(null, result)
                             } else {
-                                done(new CustomError("Membership Plan not found", 404, "Not Found"))
+                                done(new CustomError("Member not found", 404, "Not Found"))
                             }
                         })
                         .catch((error) => {
@@ -83,12 +83,12 @@ class MembershipPlanService {
 
     remove(id:string) {
         return new Promise((resolve, reject) => {
-            MembershipPlanDal.remove({ id})
+            MemberDal.remove({ id})
                 .then((result) => {
                     if (result) {
                         resolve(result)
                     } else {
-                        reject(new CustomError("Attendance not found  with this id", 404, "Not Found"))
+                        reject(new CustomError("Subscription not found  with this id", 404, "Not Found"))
                     }
                 })
                 .catch((error) => reject(new CustomError(error, 500, "Internal Server Error")))
@@ -98,4 +98,4 @@ class MembershipPlanService {
 }
 
 
-export default new MembershipPlanService;
+export default new MemberService;
