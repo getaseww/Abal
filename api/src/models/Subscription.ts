@@ -1,20 +1,19 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
 
-export class Member extends Model {
+export class Subscription extends Model {
     public id!: number;
-    public userId!:number;
-    public firstName!: string;    
-    public lastName!: string;
-    public email!: string;
-    public phoneNumber!: string;
-    public password!: string;
-    public sex!: string;
+    public userId!: number;
+    public memberId!:number; 
+    public membershipPlanId!:number;   
+    public startDate!: Date;   
+    public endDate!: Date;
+    public status!: string;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
   }
   
   export default (sequelize: Sequelize) => {
-    Member.init(
+    Subscription.init(
       {
         id: {
           type: DataTypes.INTEGER,
@@ -25,35 +24,31 @@ export class Member extends Model {
           type: DataTypes.INTEGER,
           allowNull: false,
         },
-        firstName: {
-          type: DataTypes.STRING,
+        memberId: {
+          type: DataTypes.INTEGER,
           allowNull: false,
         },
-        lastName: {
-          type: DataTypes.STRING,
+        membershipPlanId: {
+          type: DataTypes.INTEGER,
           allowNull: false,
         },
-        sex: {
-          type: DataTypes.STRING,
+        startDate: {
+          type: DataTypes.DATE,
           allowNull: false,
         },
-        email: {
-          type: DataTypes.STRING,
+        endDate: {
+          type: DataTypes.DATE,
           allowNull: false,
         },
-        phoneNumber: {
-          type: DataTypes.STRING,
-          allowNull: true,
-        },
-        password: {
+        status: {
           type: DataTypes.STRING,
           allowNull: true,
         },
       },
       {
         sequelize,
-        modelName: "member",
-        tableName: "members",
+        modelName: "subscription",
+        tableName: "subscriptions",
       }
     );
 
