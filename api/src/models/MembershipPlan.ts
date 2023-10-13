@@ -8,6 +8,7 @@ export class MembershipPlan extends Model {
     public maxMembers!:number|null;
     public price!: number;
     public image!: string | null;
+    public userId!:number;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
 }
@@ -19,6 +20,10 @@ export default (sequelize: Sequelize) => {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
+            },
+            userId: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
             },
             name: {
                 type: DataTypes.STRING,
