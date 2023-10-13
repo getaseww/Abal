@@ -1,19 +1,18 @@
 import { Request, Response } from "express";
-import PaymentService from "../services/Payment.service";
-import { Payment, Error } from "../types";
+import SubscriptionService from "../services/Subscription.service";
+import { Subscription, Error } from "../types";
 import { BadRequestError } from "../errors/errors";
 import { z } from 'zod'
 
-class PaymentController {
+class SubscriptionController {
 
     static create(request: Request, response: Response) {
 
         const schema = z.object({
-            amount: z.number().positive(),
-            trx_ref: z.string(),
             status: z.string(),
-            subscriptionId: z.number(),
-            password: z.string(),
+            membershipPlanId: z.number(),
+            startDate: z.date(),
+            endDate:z.date(),
         })
 
         const data = request.body;
@@ -22,8 +21,8 @@ class PaymentController {
             if (!schemaResult.success) {
                 response.status(404).json(schemaResult);
             }
-            PaymentService.create(data)
-                .then((result: Payment) => {
+            SubscriptionService.create(data)
+                .then((result: Subscription) => {
                     response.status(200).json(result);
                 })
                 .catch((error: Error) => {
@@ -38,8 +37,8 @@ class PaymentController {
     }
     static findById(request: Request, response: Response) {
         let id = request.params.id
-        PaymentService.findById(id)
-            .then((result: Payment) => {
+        SubscriptionService.findById(id)
+            .then((result: Subscription) => {
                 response.status(200).json(result);
             }).catch((error) => {
                 response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });
@@ -51,8 +50,8 @@ class PaymentController {
         if (request.query.name && request.query.name != "undefined")
             query = { ...query, name: request.query.name }
 
-        PaymentService.findOne(query)
-            .then((result: Payment) => {
+        SubscriptionService.findOne(query)
+            .then((result: Subscription) => {
                 response.status(200).json(result);
             }).catch((error) => {
                 response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });
@@ -64,8 +63,8 @@ class PaymentController {
         if (request.query.name && request.query.name != "undefined")
             query = { ...query, name: request.query.name }
 
-        PaymentService.findAll(query)
-            .then((result: Payment[]) => {
+        SubscriptionService.findAll(query)
+            .then((result: Subscription[]) => {
                 response.status(200).json(result)
             })
             .catch((error: Error) => {
@@ -85,7 +84,7 @@ class PaymentController {
         }
         // const { error, value } = schema.validate({ id: id })
         // if (!error) {
-        PaymentService.update(id, payload)
+        SubscriptionService.update(id, payload)
             .then((result) => {
                 if (result) {
                     response.status(200).json(result)
@@ -104,10 +103,10 @@ class PaymentController {
 
     static remove(request: Request, response: Response) {
         let id = request.params.id;
-        PaymentService.remove(id)
+        SubscriptionService.remove(id)
             .then((result) => { response.status(200).json(result) })
             .catch((error) => response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message }))
     }
 }
 
-export default PaymentController;
+export default SubscriptionController;
