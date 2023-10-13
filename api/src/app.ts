@@ -5,7 +5,7 @@ import { localStrategy, jwtStrategy } from './passport/passport.config'
 import expressSession from 'express-session'
 import cors from 'cors'
 import path from 'path'
-// import routes from './routes';
+import routes from './routes';
 dotenv.config();
 import db from './config/db';
 
@@ -42,7 +42,7 @@ app.use('/images', express.static(path.join(__dirname, "images")));
 db();
 
 
-// routes(app);
+routes(app);
 
 
 app.listen(process.env.PORT || 8000, () => {
