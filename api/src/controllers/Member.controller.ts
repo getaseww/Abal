@@ -17,12 +17,15 @@ class MemberController {
         })
 
         const data = request.body;
+        let user: any = request.user;
+
+        const userId:number=user.id;
         try {
             const schemaResult = schema.safeParse(data)
             if (!schemaResult.success) {
                 response.status(404).json(schemaResult);
             }
-            MemberService.create(data)
+            MemberService.create({...data,userId})
                 .then((result: MemberType) => {
                     response.status(200).json(result);
                 })
@@ -75,12 +78,12 @@ class MemberController {
     }
 
     static update(request: Request, response: Response) {
-        let id = request.params.id;
+        let id:any = request.params.id;
         let payload = request.body;
         const schema = z.object({
             id: z.number(),
         })
-        const result = schema.safeParse(id)
+        const result = schema.safeParse({id:parseInt(id)})
         if (!result.success) {
             response.status(404).json(result);
         }

@@ -4,6 +4,7 @@ import passportJwt from 'passport-jwt';
 import {Strategy} from 'passport-local';
 import { User } from '../types';
 import env from 'dotenv'
+import UserService from '../services/User.service';
 
 env.config();
 // export const GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -20,33 +21,33 @@ export const localStrategy = new Strategy(
         passwordField: "password",
     },
     (email:string, password:string, done:Function) => {
-        // UserService.findOne({ email })
-        //     .then((user:any) => {
-        //         if (!user) {
-        //             return done(null, false, {
-        //                 message: "Login Failed: Invalid Email or password!",
-        //             });
-        //         } else {
-        //             bcrypt.compare(
-        //                 password,
-        //                 `${user.password}`,
-        //                 (error, isMatch) => {
-        //                     if (error) {
-        //                         return done(null, false, error);
-        //                     } else if (!isMatch) {
-        //                         return done(null, false, {
-        //                             message: "Login Failed: Invalid Email or password!",
-        //                         });
-        //                     } else {
-        //                         return done(null, user);
-        //                     }
-        //                 }
-        //             );
-        //         }
-        //     })
-        //     .catch((error: any) => {
-        //         done(error);
-        //     });
+        UserService.findOne({ email })
+            .then((user:any) => {
+                if (!user) {
+                    return done(null, false, {
+                        message: "Login Failed: Invalid Email or password!",
+                    });
+                } else {
+                    bcrypt.compare(
+                        password,
+                        `${user.password}`,
+                        (error, isMatch) => {
+                            if (error) {
+                                return done(null, false, error);
+                            } else if (!isMatch) {
+                                return done(null, false, {
+                                    message: "Login Failed: Invalid Email or password!",
+                                });
+                            } else {
+                                return done(null, user);
+                            }
+                        }
+                    );
+                }
+            })
+            .catch((error: any) => {
+                done(error);
+            });
     }
 );
 
@@ -57,17 +58,17 @@ export const jwtStrategy = new passportJwt.Strategy(
         ignoreExpiration:true,
     },
     (jwtPayload, next) => {
-        // UserService.findOne({ id: jwtPayload.id })
-        //     .then((user) => {
-        //         if (user) {
-        //             next(null, user);
-        //         } else {
-        //             next(null, false);
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         return next(error, false);
-        //     });
+        UserService.findOne({ id: jwtPayload.id })
+            .then((user) => {
+                if (user) {
+                    next(null, user);
+                } else {
+                    next(null, false);
+                }
+            })
+            .catch((error) => {
+                return next(error, false);
+            });
     }
 );
 

@@ -18,8 +18,12 @@ class MembershipPlanController {
         })
 
         const data = request.body;
+
+        let user: any = request.user;
+
+        const userId:number=user.id;
         try {
-            schema.parseAsync(data)
+            schema.parseAsync({...data,userId})
             MembershipPlanService.create(data)
                 .then((result: MembershipPlanType) => {
                     response.status(200).json(result);

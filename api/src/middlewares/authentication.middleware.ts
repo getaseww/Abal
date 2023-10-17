@@ -46,16 +46,13 @@ export const authentication = (req: Request, res: Response, next: Function) => {
 };
 
 export const response = (req: any, res: Response) => {
-    let user: any = req.user;
+    let user: User = req.user;
     res.status(200).json({
         token: req.token,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        roleId: user.roleId,
         id: user.id,
-        phoneNumber: user.phoneNumber,
-        sex: user.sex,
     });
 };
 
@@ -67,14 +64,14 @@ export const authenticateHeader = (
 ) => {
     const authentication_header = req.headers.authorization;
     const token = authentication_header && authentication_header.split(" ")[1];
-    if (token == null) return res.status(401).json("Unauthorized!");
+    if (token == null) return res.status(401).json({error:"Token not provided!"});
 
     jwt.verify(
         token,
         process.env.TOKEN_KEY,
-        (error, user) => {
+        (error, user:User) => {
             if (error) {
-                return res.status(403).json("Forbiden!");
+                return res.status(403).json({error:"Invalid token!"});
             }
             req.user = user;
             next();
