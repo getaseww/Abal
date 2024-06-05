@@ -9,11 +9,10 @@ class UserController {
     static create(request: Request, response: Response) {
 
         const schema = z.object({
-            firstName: z.string(),
-            lastName: z.string(),
-            businessName: z.string(),
-            email: z.string().email(),
-            password: z.string(),
+            first_name: z.string(),
+            last_name: z.string(),
+            phone_number: z.string().regex(new RegExp(/^09\d{8}$/), "Invalid phone number use 09 format!"),
+            password: z.string().optional(),
         })
 
         const data = request.body;

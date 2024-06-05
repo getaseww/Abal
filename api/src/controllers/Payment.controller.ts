@@ -12,7 +12,9 @@ class PaymentController {
             amount: z.number().positive(),
             trx_ref: z.string(),
             status: z.string(),
-            subscriptionId: z.number(),
+            subscription_id: z.number(),
+            user_id: z.number(),
+            member_id: z.number(),
             password: z.string(),
         })
 
@@ -27,7 +29,7 @@ class PaymentController {
                     response.status(200).json(result);
                 })
                 .catch((error: Error) => {
-                    
+
                     response.status(401).json(error);
                 });
         } catch (error) {

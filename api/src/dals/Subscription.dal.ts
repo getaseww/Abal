@@ -1,11 +1,10 @@
 import { Subscription } from "../models/Subscription";
-import {Subscription as SubscriptionType} from '../types'
 
 class SubscriptionDal {
     create(payload:any) {
         return new Promise((resolve, reject) => {
             Subscription.create(payload)
-                .then((result:SubscriptionType) => resolve(result))
+                .then((result:Subscription) => resolve(result))
                 .catch((error:any) => reject(error));
         });
     }
@@ -20,7 +19,7 @@ class SubscriptionDal {
                 //     }
                 // ]
             })
-                .then((result:SubscriptionType[]) => resolve(result))
+                .then((result:Subscription[]) => resolve(result))
                 .catch((error:any) => reject(error));
         })
     }
@@ -30,7 +29,7 @@ class SubscriptionDal {
             Subscription.findOne({
                 where: query,
             })
-                .then((result:SubscriptionType) => {
+                .then((result:Subscription) => {
                     resolve(result)})
                 .catch((error:any) => {
                     reject(error)
@@ -43,7 +42,7 @@ class SubscriptionDal {
             Subscription.findOne({
                 where: { id },
             })
-                .then((result: SubscriptionType) => {
+                .then((result: Subscription) => {
                     resolve(result)
                 })
                 .catch((error: any) => {
@@ -61,7 +60,7 @@ class SubscriptionDal {
 
 
                subscription.save()
-                    .then((result:SubscriptionType) => {
+                    .then((result:Subscription) => {
                         if (result) {
                             resolve(result)
                         } else {

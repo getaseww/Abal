@@ -2,9 +2,9 @@ import { DataTypes, Model, Sequelize } from "sequelize";
 
 export class Subscription extends Model {
     public id!: number;
-    public userId!: number;
-    public memberId!:number; 
-    public membershipPlanId!:number;   
+    public user_id!: number;
+    public member_id!:number; 
+    public membership_plan_id!:number;   
     public startDate!: Date;   
     public endDate!: Date;
     public status!: string;
@@ -24,11 +24,11 @@ export class Subscription extends Model {
           type: DataTypes.INTEGER,
           allowNull: false,
         },
-        memberId: {
+        member_id: {
           type: DataTypes.INTEGER,
           allowNull: false,
         },
-        membershipPlanId: {
+        membership_plan_id: {
           type: DataTypes.INTEGER,
           allowNull: false,
         },
@@ -51,6 +51,4 @@ export class Subscription extends Model {
         tableName: "subscriptions",
       }
     );
-
-
   };

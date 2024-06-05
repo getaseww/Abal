@@ -1,11 +1,10 @@
 import { Payment } from "../models/Payment";
-import {Payment as PaymentType} from '../types'
 
 class PaymentDal {
     create(payload:any) {
         return new Promise((resolve, reject) => {
             Payment.create(payload)
-                .then((result:PaymentType) => resolve(result))
+                .then((result:Payment) => resolve(result))
                 .catch((error:any) => reject(error));
         });
     }
@@ -20,7 +19,7 @@ class PaymentDal {
                 //     }
                 // ]
             })
-                .then((result:PaymentType[]) => resolve(result))
+                .then((result:Payment[]) => resolve(result))
                 .catch((error:any) => reject(error));
         })
     }
@@ -30,7 +29,7 @@ class PaymentDal {
             Payment.findOne({
                 where: query,
             })
-                .then((result:PaymentType) => {
+                .then((result:Payment) => {
                     resolve(result)})
                 .catch((error:any) => {
                     reject(error)
@@ -43,7 +42,7 @@ class PaymentDal {
             Payment.findOne({
                 where: { id },
             })
-                .then((result: PaymentType) => {
+                .then((result: Payment) => {
                     resolve(result)
                 })
                 .catch((error: any) => {
@@ -61,7 +60,7 @@ class PaymentDal {
 
 
                 payment.save()
-                    .then((result:PaymentType) => {
+                    .then((result:Payment) => {
                         if (result) {
                             resolve(result)
                         } else {

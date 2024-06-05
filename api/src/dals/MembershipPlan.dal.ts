@@ -1,11 +1,10 @@
 import { MembershipPlan } from "../models/MembershipPlan";
-import {MembershipPlan as MembershipPlanType} from '../types'
 
 class MembershipPlanDal {
     create(payload:any) {
         return new Promise((resolve, reject) => {
             MembershipPlan.create(payload)
-                .then((result:MembershipPlanType) => resolve(result))
+                .then((result:MembershipPlan) => resolve(result))
                 .catch((error:any) => reject(error));
         });
     }
@@ -20,7 +19,7 @@ class MembershipPlanDal {
                 //     }
                 // ]
             })
-                .then((result:MembershipPlanType[]) => resolve(result))
+                .then((result:MembershipPlan[]) => resolve(result))
                 .catch((error:any) => reject(error));
         })
     }
@@ -30,7 +29,7 @@ class MembershipPlanDal {
             MembershipPlan.findOne({
                 where: query,
             })
-                .then((result:MembershipPlanType) => {
+                .then((result:MembershipPlan) => {
                     resolve(result)})
                 .catch((error:any) => {
                     reject(error)
@@ -43,7 +42,7 @@ class MembershipPlanDal {
             MembershipPlan.findOne({
                 where: { id },
             })
-                .then((result: MembershipPlanType) => {
+                .then((result: MembershipPlan) => {
                     resolve(result)
                 })
                 .catch((error: any) => {
@@ -61,7 +60,7 @@ class MembershipPlanDal {
 
 
                 membershipPlan.save()
-                    .then((result:MembershipPlanType) => {
+                    .then((result:MembershipPlan) => {
                         if (result) {
                             resolve(result)
                         } else {

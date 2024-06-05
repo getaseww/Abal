@@ -5,8 +5,9 @@ export class Payment extends Model {
   public amount!: number;
   public trx_ref!: string;
   public status!: string;
-  public subscriptionId!: number;
-  public memberId!: number;
+  public subscription_id!: number;
+  public member_id!: number;
+  public user_id!: number;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -15,10 +16,10 @@ export default (sequelize: Sequelize) => {
   Payment.init(
     {
       id: {
-          type: DataTypes.INTEGER,
-          primaryKey: true,
-          autoIncrement: true,
-        },
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
       amount: {
         type: DataTypes.FLOAT,
         allowNull: false,
@@ -32,11 +33,11 @@ export default (sequelize: Sequelize) => {
         allowNull: false,
         defaultValue: 'pending',
       },
-      subscriptionId: {
+      subscription_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      memberId: {
+      member_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -46,11 +47,6 @@ export default (sequelize: Sequelize) => {
       modelName: "payment",
       tableName: "payments",
       timestamps: true,
-      createdAt: 'createdAt',
-      updatedAt: 'updatedAt',
     }
   );
-
-  // Define associations
-  
 };

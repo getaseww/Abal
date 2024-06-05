@@ -1,16 +1,15 @@
-import { User as UserType } from '../types';
 import { User } from '../models/User';
 
 class UserDal {
-    create(payload:any) {
+    create(payload: any) {
         return new Promise((resolve, reject) => {
             User.create(payload)
-                .then((result:User) => resolve(result))
-                .catch((error:any) => reject(error));
+                .then((result: User) => resolve(result))
+                .catch((error: any) => reject(error));
         });
     }
 
-    findAll = (query:any) => {
+    findAll = (query: any) => {
         return new Promise((resolve, reject) => {
             User.findAll({
                 where: query,
@@ -20,19 +19,20 @@ class UserDal {
                 //     }
                 // ]
             })
-                .then((result:User[]) => resolve(result))
-                .catch((error:any) => reject(error));
+                .then((result: User[]) => resolve(result))
+                .catch((error: any) => reject(error));
         })
     }
 
-    findOne = (query:any) => {
+    findOne = (query: any) => {
         return new Promise((resolve, reject) => {
             User.findOne({
                 where: query,
             })
-                .then((result:User) => {
-                    resolve(result)})
-                .catch((error:any) => {
+                .then((result: User) => {
+                    resolve(result)
+                })
+                .catch((error: any) => {
                     reject(error)
                 });
         });
@@ -52,23 +52,23 @@ class UserDal {
         });
     }
 
-    update = (user:User, payload:any) => {
+    update = (user: User, payload: any) => {
         return new Promise((resolve, reject) => {
             if (user) {
-                if (payload.firstName) user.firstName = payload.firstName;
-                if (payload.lastName) user.lastName = payload.lastName;
-                if (payload.email) user.email = payload.email;
+                if (payload.first_name) user.first_name = payload.first_name;
+                if (payload.last_name) user.last_name = payload.last_name;
+                if (payload.phone_number) user.phone_number = payload.phone_number;
 
 
-               user.save()
-                    .then((result:User) => {
+                user.save()
+                    .then((result: User) => {
                         if (result) {
                             resolve(result)
                         } else {
                             resolve(null)
                         }
                     })
-                    .catch((error:any) => {
+                    .catch((error: any) => {
                         reject(error)
                     });
             } else {
@@ -77,17 +77,17 @@ class UserDal {
         });
     }
 
-    remove = (query:any) => {
+    remove = (query: any) => {
         return new Promise((resolve, reject) => {
             User.destroy({ where: query })
-                .then((result:any) => {
+                .then((result: any) => {
                     if (result) {
                         resolve("Deleted successfully!")
                     } else {
                         resolve(null)
                     }
                 })
-                .catch((error:any) => reject(error));
+                .catch((error: any) => reject(error));
         });
     }
 }

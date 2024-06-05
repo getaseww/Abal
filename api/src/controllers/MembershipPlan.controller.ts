@@ -13,7 +13,7 @@ class MembershipPlanController {
             description: z.string().optional(),
             price:z.number(),
             duration:z.string(),
-            maxMembers:z.number(),
+            max_member:z.number(),
             image:z.string().optional()
         })
 

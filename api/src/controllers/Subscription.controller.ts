@@ -10,9 +10,9 @@ class SubscriptionController {
 
         const schema = z.object({
             status: z.string(),
-            membershipPlanId: z.number(),
-            startDate: z.date(),
-            endDate:z.date(),
+            membership_plan_id: z.number(),
+            start_date: z.date(),
+            end_date:z.date(),
         })
 
         const data = request.body;

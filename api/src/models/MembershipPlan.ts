@@ -4,11 +4,11 @@ export class MembershipPlan extends Model {
     public id!: string;
     public name!: string;
     public description!: string | null;
-    public duration!:string;
-    public maxMembers!:number|null;
+    public duration!: string;
+    public max_member!: number | null;
     public price!: number;
     public image!: string | null;
-    public userId!:number;
+    public user_id!: number;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
 }
@@ -21,7 +21,7 @@ export default (sequelize: Sequelize) => {
                 primaryKey: true,
                 autoIncrement: true,
             },
-            userId: {
+            user_id: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
@@ -37,7 +37,7 @@ export default (sequelize: Sequelize) => {
                 type: DataTypes.STRING,
                 allowNull: true,
             },
-            maxMembers: {
+            max_member: {
                 type: DataTypes.INTEGER,
                 allowNull: true,
             },
@@ -52,10 +52,10 @@ export default (sequelize: Sequelize) => {
         },
         {
             sequelize,
-            modelName: "membershipPlan",
+            modelName: "membership_plan",
             tableName: "membership_plans",
             timestamps: true,
         }
     );
-    
+
 };
