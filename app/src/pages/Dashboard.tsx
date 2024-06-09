@@ -1,9 +1,9 @@
 import SidebarLayout from "../layouts/SidebarLayout";
-import { useFetchRolesQuery } from '../store/api/apiSlice';
+import { useFetchRolesQuery } from "../api/roleApiSlice";
 
 
 export default function page() {
-    // const { data: posts, isLoading, isError, error } = useFetchRolesQuery();
+    //  const { data: posts, isLoading, isError, error } = useFetchRolesQuery();
 
     return (
         <SidebarLayout >
