@@ -52,6 +52,9 @@ module.exports = {
       ...defaultTheme.screens,
     },
     extend: {
+      height: {
+        'screen-minus-20': 'calc(100vh - 20px)',
+      },
       fontSize: {
         'title-xxl': ['44px', '55px'],
         'title-xl': ['36px', '45px'],
