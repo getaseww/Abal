@@ -31,7 +31,7 @@ export default (sequelize: Sequelize) => {
       status: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: 'pending',
+        defaultValue: 'Pending',
       },
       subscription_id: {
         type: DataTypes.INTEGER,

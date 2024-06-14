@@ -15,8 +15,11 @@ class UserController {
             password: z.string().optional(),
         })
 
-        const data = request.body;
         try {
+            const data = request.body;
+            const user: any = request.user;
+            data.user_id = user.id
+
             const schemaResult = schema.safeParse(data)
             if (!schemaResult.success) {
                 response.status(404).json(schemaResult);
@@ -27,7 +30,7 @@ class UserController {
                     response.status(200).json(data);
                 })
                 .catch((error: Error) => {
-                    
+
                     response.status(401).json(error);
                 });
         } catch (error) {

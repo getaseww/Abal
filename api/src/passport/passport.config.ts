@@ -17,15 +17,15 @@ const security = {
 
 export const localStrategy = new Strategy(
     {
-        usernameField: "email",
+        usernameField: "phone_number",
         passwordField: "password",
     },
-    (email:string, password:string, done:Function) => {
-        UserService.findOne({ email })
+    (phone_number:string, password:string, done:Function) => {
+        UserService.findOne({ phone_number })
             .then((user:any) => {
                 if (!user) {
                     return done(null, false, {
-                        message: "Login Failed: Invalid Email or password!",
+                        message: "Login Failed: Invalid Phone Number or password!",
                     });
                 } else {
                     bcrypt.compare(
@@ -36,7 +36,7 @@ export const localStrategy = new Strategy(
                                 return done(null, false, error);
                             } else if (!isMatch) {
                                 return done(null, false, {
-                                    message: "Login Failed: Invalid Email or password!",
+                                    message: "Login Failed: Invalid Phone Number or password!",
                                 });
                             } else {
                                 return done(null, user);

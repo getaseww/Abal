@@ -18,8 +18,13 @@ class PaymentController {
             password: z.string(),
         })
 
-        const data = request.body;
+
+
         try {
+            const data = request.body;
+            const user: any = request.user;
+            data.user_id = user.id
+            
             const schemaResult = schema.safeParse(data)
             if (!schemaResult.success) {
                 response.status(404).json(schemaResult);

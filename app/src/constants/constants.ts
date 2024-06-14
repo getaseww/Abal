@@ -10,3 +10,5 @@ export const routes = {
     SUBSCRIPTION: "/dashboard/subscription",
     ROLE: "/dashboard/role",
 }
+
+export const BUTTON_BACKGROUND = "bg-[#1F677D]";

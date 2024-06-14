@@ -35,9 +35,7 @@ export const authentication = (req: Request, res: Response, next: Function) => {
                         .status(401)
                         .json({ message: "Login Failed: Invalid Phone number or password!" });
                 } else {
-                    console.log("success", user)
                     req.user = user;
-                    console.log(req);
                 }
                 next();
             });

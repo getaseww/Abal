@@ -3,8 +3,9 @@
 import { ReactNode, useState } from "react";
 import Header from "../components/dashboard/Header";
 import Sidebar from "../components/dashboard/Sidebar";
+import { Outlet } from "react-router-dom";
 
-export default function SidebarLayout({ children }: { children: ReactNode }) {
+export default function DefaultLayout() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
@@ -12,7 +13,9 @@ export default function SidebarLayout({ children }: { children: ReactNode }) {
             <Header toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
             <div className="flex">
                 <Sidebar isOpen={sidebarOpen} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
-                {children}
+                <>
+                    <Outlet />
+                </>
             </div>
         </div>
     )

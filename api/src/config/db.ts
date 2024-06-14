@@ -19,61 +19,44 @@ export default async () => {
     logging: false,
   });
 
-  UserFactory(sequelize),
-    MembershipPlanFactory(sequelize),
-    SubscriptionFactory(sequelize),
-    PaymentFactory(sequelize),
-    RoleFactory(sequelize),
+  UserFactory(sequelize);
+  MembershipPlanFactory(sequelize);
+  SubscriptionFactory(sequelize);
+  PaymentFactory(sequelize);
+  RoleFactory(sequelize);
 
-    Role.hasMany(User, { foreignKey: "role_id" })
+  User.hasMany(User, { foreignKey: { name: "user_id", allowNull: true } })
+  User.belongsTo(User, { foreignKey: { name: "user_id", allowNull: true } })
+
+  Role.hasMany(User, { foreignKey: "role_id" })
   User.belongsTo(Role, {
     foreignKey: "role_id"
   })
 
   User.hasMany(MembershipPlan, {
     foreignKey: 'user_id',
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
   })
   MembershipPlan.belongsTo(User, {
     foreignKey: 'user_id',
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
   });
 
+  User.hasMany(Subscription, { foreignKey: 'user_id', })
+  Subscription.belongsTo(User, { foreignKey: 'user_id', });
 
-  User.hasMany(Subscription, {
-    foreignKey: 'user_id',
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
-  })
-  Subscription.belongsTo(User, {
-    foreignKey: 'user_id',
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
-  });
+  User.hasMany(Subscription, { foreignKey: 'member_id', as: "member_subscriptions" })
+  Subscription.belongsTo(User, { foreignKey: 'member_id', as: "subscriber" });
 
-  User.hasMany(Subscription, {
-    foreignKey: 'member_id',
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
-  })
-  Subscription.belongsTo(User, {
-    foreignKey: 'memberId',
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
-  });
+  MembershipPlan.hasMany(Subscription, { foreignKey: 'membership_plan_id', })
+  Subscription.belongsTo(MembershipPlan, { foreignKey: 'membership_plan_id', });
 
-  MembershipPlan.hasMany(Subscription, {
-    foreignKey: 'membership_plan_id',
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
-  })
-  Subscription.belongsTo(MembershipPlan, {
-    foreignKey: 'membership_plan_id',
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
-  });
+  User.hasMany(Payment, { foreignKey: { name: "user_id" } })
+  Payment.belongsTo(User, { foreignKey: { name: "user_id" } })
+
+  User.hasMany(Payment, { foreignKey: { name: "member_id" }, as: "member" })
+  Payment.belongsTo(User, { foreignKey: { name: "member_id" }, as: "member_payments" })
+
+  Subscription.hasMany(Payment, { foreignKey: { name: "subscription_id" } })
+  Payment.belongsTo(Subscription, { foreignKey: { name: "subscription_id" } })
 
 
   sequelize

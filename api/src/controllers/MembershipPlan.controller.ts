@@ -17,13 +17,13 @@ class MembershipPlanController {
             image:z.string().optional()
         })
 
-        const data = request.body;
 
-        let user: any = request.user;
-
-        const userId:number=user.id;
         try {
-            schema.parseAsync({...data,userId})
+            const data = request.body;
+            const user: any = request.user;
+            data.user_id = user.id
+
+            schema.parseAsync(data)
             MembershipPlanService.create(data)
                 .then((result: MembershipPlanType) => {
                     response.status(200).json(result);

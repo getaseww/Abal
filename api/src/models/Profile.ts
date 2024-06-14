@@ -24,11 +24,11 @@ export default (sequelize: Sequelize) => {
             },
             bmi: {
                 type: DataTypes.INTEGER,
-                allowNull: false,
+                allowNull: true,
             },
             address: {
                 type: DataTypes.STRING,
-                allowNull: false,
+                allowNull: true,
             },
             user_id: {
                 type: DataTypes.INTEGER,

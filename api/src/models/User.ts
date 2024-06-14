@@ -7,6 +7,8 @@ export class User extends Model {
   public phone_number!: string;
   public password!: string;
   public role_id!: string;
+  public user_id!: string;
+
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -39,6 +41,10 @@ export default (sequelize: Sequelize) => {
       role_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
+      },
+      user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
       },
     },
     {

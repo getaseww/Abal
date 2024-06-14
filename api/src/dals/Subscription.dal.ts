@@ -54,9 +54,10 @@ class SubscriptionDal {
     update = (subscription:Subscription, payload:any) => {
         return new Promise((resolve, reject) => {
             if (subscription) {
-                // if (payload.firstName) subscription.firstName = payload.firstName;
-                // if (payload.lastName) subscription.lastName = payload.lastName;
-                // if (payload.email) subscription.email = payload.email;
+                if (payload.member_id) subscription.member_id = payload.member_id;
+                if (payload.membership_plan_id) subscription.membership_plan_id = payload.membership_plan_id;
+                if (payload.start_date) subscription.start_date = payload.start_date;
+                if (payload.end_date) subscription.end_date = payload.end_date;
 
 
                subscription.save()
