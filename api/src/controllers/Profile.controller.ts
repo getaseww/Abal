@@ -1,52 +1,46 @@
 import { Request, Response } from "express";
-import PaymentService from "../services/Payment.service";
-import { Payment, Error } from "../types";
+import { Error } from "../types";
 import { BadRequestError } from "../errors/errors";
 import { z } from 'zod'
+import ProfileService from "../services/Profile.service";
+import { Profile } from "passport";
 
-class PaymentController {
+
+class ProfileController {
 
     static create(request: Request, response: Response) {
-
         const schema = z.object({
-            amount: z.number().positive(),
-            trx_ref: z.string(),
-            status: z.string(),
-            subscription_id: z.number(),
+            sex: z.string(),
             user_id: z.number(),
-            member_id: z.number(),
-            password: z.string(),
+            bmi: z.string().optional().nullable(),
+            address: z.string().optional().nullable(),
+
         })
 
-
-
+        const data = request.body;
         try {
-            const data = request.body;
-            const user: any = request.user;
-            data.user_id = user.id
-
             const schemaResult = schema.safeParse(data)
             if (!schemaResult.success) {
-                response.status(404).json(schemaResult);
+                response.status(400).json(schemaResult);
+            } else {
+                ProfileService.create(data)
+                    .then((result: Profile) => {
+                        response.status(201).json({ data: result, message: "Created Successfully!" });
+                    })
+                    .catch((error: Error) => {
+                        response.status(error.statusCode).json({ error: error.errorCode, message: error.message });
+                    });
             }
-            PaymentService.create(data)
-                .then((result: Payment) => {
-                    response.status(200).json(result);
-                })
-                .catch((error: Error) => {
 
-                    response.status(401).json(error);
-                });
         } catch (error) {
-            let err = new BadRequestError(JSON.stringify(error));
-            response.status(error.statusCode).json({ "error": err.errorCode, "message": err.message });
+            response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });
         }
 
     }
     static findById(request: Request, response: Response) {
         let id = parseInt(request.params.id);
-        PaymentService.findById(id)
-            .then((result: Payment) => {
+        ProfileService.findById(id)
+            .then((result: Profile) => {
                 response.status(200).json(result);
             }).catch((error) => {
                 response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });
@@ -58,8 +52,8 @@ class PaymentController {
         if (request.query.name && request.query.name != "undefined")
             query = { ...query, name: request.query.name }
 
-        PaymentService.findOne(query)
-            .then((result: Payment) => {
+        ProfileService.findOne(query)
+            .then((result: Profile) => {
                 response.status(200).json(result);
             }).catch((error) => {
                 response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });
@@ -71,8 +65,8 @@ class PaymentController {
         if (request.query.name && request.query.name != "undefined")
             query = { ...query, name: request.query.name }
 
-        PaymentService.findAll(query)
-            .then((result: Payment[]) => {
+        ProfileService.findAll(query)
+            .then((result: Profile[]) => {
                 response.status(200).json(result)
             })
             .catch((error: Error) => {
@@ -92,7 +86,7 @@ class PaymentController {
         }
         // const { error, value } = schema.validate({ id: id })
         // if (!error) {
-        PaymentService.update(id, payload)
+        ProfileService.update(id, payload)
             .then((result) => {
                 if (result) {
                     response.status(200).json(result)
@@ -108,13 +102,12 @@ class PaymentController {
         // }
     }
 
-
     static remove(request: Request, response: Response) {
         let id = parseInt(request.params.id);
-        PaymentService.remove(id)
+        ProfileService.remove(id)
             .then((result) => { response.status(200).json(result) })
             .catch((error) => response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message }))
     }
 }
 
-export default PaymentController;
+export default ProfileController;

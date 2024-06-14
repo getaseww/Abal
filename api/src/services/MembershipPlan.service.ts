@@ -30,7 +30,7 @@ class MembershipPlanService {
 
 
 
-    findById(id:any) {
+    findById(id:number) {
         return new Promise((resolve, reject) => {
             MembershipPlanDal.findById(id).then((result) => resolve(result))
                 .catch((error) => reject(new CustomError(error, 500, "Internal Server Error")))
@@ -44,7 +44,7 @@ class MembershipPlanService {
         })
     }
 
-    update(id:string, payload:any) {
+    update(id:number, payload:any) {
         return new Promise((resolve, reject) => {
             async.waterfall([
                 (done:Function) => {
@@ -81,14 +81,14 @@ class MembershipPlanService {
         })
     }
 
-    remove(id:string) {
+    remove(id:number) {
         return new Promise((resolve, reject) => {
             MembershipPlanDal.remove({ id})
                 .then((result) => {
                     if (result) {
                         resolve(result)
                     } else {
-                        reject(new CustomError("Attendance not found  with this id", 404, "Not Found"))
+                        reject(new CustomError("Membership Plan not found  with this id", 404, "Not Found"))
                     }
                 })
                 .catch((error) => reject(new CustomError(error, 500, "Internal Server Error")))

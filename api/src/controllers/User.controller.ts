@@ -18,7 +18,7 @@ class UserController {
         try {
             const data = request.body;
             const user: any = request.user;
-            data.user_id = user.id
+            data.user_id = user?.id ?? null
 
             const schemaResult = schema.safeParse(data)
             if (!schemaResult.success) {
@@ -40,7 +40,7 @@ class UserController {
 
     }
     static findById(request: Request, response: Response) {
-        let id = request.params.id
+        let id = parseInt(request.params.id)
         UserService.findById(id)
             .then((result: User) => {
                 const { password, ...data } = result;
@@ -80,7 +80,7 @@ class UserController {
     }
 
     static update(request: Request, response: Response) {
-        let id = request.params.id;
+        let id = parseInt(request.params.id);
         let payload = request.body;
         const schema = z.object({
             id: z.number(),
@@ -109,7 +109,7 @@ class UserController {
 
 
     static remove(request: Request, response: Response) {
-        let id = request.params.id;
+        let id = parseInt(request.params.id);
         UserService.remove(id)
             .then((result) => { response.status(200).json(result) })
             .catch((error) => response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message }))

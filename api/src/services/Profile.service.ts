@@ -1,16 +1,16 @@
 import async from 'async'
 import CustomError from '../errors/customError';
-import { Role } from '../models/Role';
-import RoleDal from '../dals/Role.dal';
+import { Profile } from '../models/Profile';
+import ProfileDal from '../dals/Profile.dal';
 
-class RoleService {
-    create(payload: Role) {
+class ProfileService {
+    create(payload: Profile) {
         return new Promise((resolve, reject) => {
             async.waterfall([
                 (done: Function) => {
-                    RoleDal.create(payload).then((result) => done(null, result))
+                    ProfileDal.create(payload).then((result) => done(null, result))
                         .catch((error) => {
-                            done(new CustomError(error,500,"Bad Request"), null)
+                            done(new CustomError(error, 500, "Bad Request"), null)
                         })
                 }
             ], (error: any, result: any) => {
@@ -22,37 +22,37 @@ class RoleService {
 
     findAll(query: any) {
         return new Promise((resolve, reject) => {
-            RoleDal.findAll(query).then((result) => resolve(result))
+            ProfileDal.findAll(query).then((result) => resolve(result))
                 .catch((error) => reject(new CustomError(error, 500, "Internal Server Error")))
         })
     }
 
 
 
-    findById(id:number) {
+    findById(id: number) {
         return new Promise((resolve, reject) => {
-            RoleDal.findById(id).then((result) => resolve(result))
+            ProfileDal.findById(id).then((result) => resolve(result))
                 .catch((error) => reject(new CustomError(error, 500, "Internal Server Error")))
         })
     }
 
-    findOne(query:any) {
+    findOne(query: any) {
         return new Promise((resolve, reject) => {
-            RoleDal.findOne(query).then((result) => resolve(result))
+            ProfileDal.findOne(query).then((result) => resolve(result))
                 .catch((error) => reject(new CustomError(error, 500, "Internal Server Error")))
         })
     }
 
-    update(id:number, payload:any) {
+    update(id: number, payload: any) {
         return new Promise((resolve, reject) => {
             async.waterfall([
-                (done:Function) => {
-                    RoleDal.findOne({ id })
-                        .then((Role) => {
-                            if (Role) {
-                                done(null, Role)
+                (done: Function) => {
+                    ProfileDal.findOne({ id })
+                        .then((profile) => {
+                            if (profile) {
+                                done(null, profile)
                             } else {
-                                done(new CustomError("Role not found", 404, "Not Found"), null);
+                                done(new CustomError("profile not found", 404, "Not Found"), null);
                             }
                         })
                         .catch((error) => {
@@ -60,34 +60,34 @@ class RoleService {
                             done(new CustomError(error, 500, "Internal Server Error"), null)
                         })
                 },
-                (role:Role, done:Function) => {
-                    RoleDal.update(role, payload)
+                (profile: Profile, done: Function) => {
+                    ProfileDal.update(profile, payload)
                         .then((result) => {
                             if (result) {
                                 done(null, result)
                             } else {
-                                done(new CustomError("Role not found", 404, "Not Found"))
+                                done(new CustomError("Profile not found", 404, "Not Found"))
                             }
                         })
                         .catch((error) => {
                             done(new CustomError(error, 500, "Internal Server Error"))
                         })
                 }
-            ], (error:any, result:any) => {
+            ], (error: any, result: any) => {
                 if (error) reject(error)
                 else resolve(result)
             })
         })
     }
 
-    remove(id:number) {
+    remove(id: number) {
         return new Promise((resolve, reject) => {
-            RoleDal.remove({ id})
+            ProfileDal.remove({ id })
                 .then((result) => {
                     if (result) {
                         resolve(result)
                     } else {
-                        reject(new CustomError("Role not found  with this id", 404, "Not Found"))
+                        reject(new CustomError("Profile not found  with this id", 404, "Not Found"))
                     }
                 })
                 .catch((error) => reject(new CustomError(error, 500, "Internal Server Error")))
@@ -97,4 +97,4 @@ class RoleService {
 }
 
 
-export default new RoleService;
+export default new ProfileService;

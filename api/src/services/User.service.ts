@@ -33,7 +33,7 @@ class UserService {
 
 
 
-    findById(id:string) {
+    findById(id:number) {
         return new Promise((resolve, reject) => {
             UserDal.findById(id).then((result) => resolve(result))
                 .catch((error) => reject(new CustomError(error, 500, "Internal Server Error")))
@@ -43,13 +43,12 @@ class UserService {
     findOne(query:any) {
         return new Promise((resolve, reject) => {
             UserDal.findOne(query).then((result) => {
-                console.log("user from service",result)
                 resolve(result)})
                 .catch((error) => reject(new CustomError(error, 500, "Internal Server Error")))
         })
     }
 
-    update(id:string, payload:any) {
+    update(id:number, payload:any) {
         return new Promise((resolve, reject) => {
             async.waterfall([
                 (done:Function) => {
@@ -86,7 +85,7 @@ class UserService {
         })
     }
 
-    remove(id:string) {
+    remove(id:number) {
         return new Promise((resolve, reject) => {
             UserDal.remove({ id})
                 .then((result) => {

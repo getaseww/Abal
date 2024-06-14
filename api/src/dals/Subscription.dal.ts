@@ -37,7 +37,7 @@ class SubscriptionDal {
         });
     }
 
-    findById = (id: string) => {
+    findById = (id: number) => {
         return new Promise((resolve, reject) => {
             Subscription.findOne({
                 where: { id },

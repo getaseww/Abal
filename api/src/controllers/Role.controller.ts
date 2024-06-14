@@ -34,7 +34,7 @@ class RoleController {
 
     }
     static findById(request: Request, response: Response) {
-        let id = request.params.id
+        let id = parseInt(request.params.id);
         RoleService.findById(id)
             .then((result: Role) => {
                 response.status(200).json(result);
@@ -71,7 +71,7 @@ class RoleController {
     }
 
     static update(request: Request, response: Response) {
-        let id = request.params.id;
+        let id = parseInt(request.params.id);
         let payload = request.body;
         const schema = z.object({
             id: z.number(),
@@ -99,7 +99,7 @@ class RoleController {
     }
 
     static remove(request: Request, response: Response) {
-        let id = request.params.id;
+        let id = parseInt(request.params.id);
         RoleService.remove(id)
             .then((result) => { response.status(200).json(result) })
             .catch((error) => response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message }))

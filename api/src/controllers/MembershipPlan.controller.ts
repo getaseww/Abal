@@ -41,7 +41,7 @@ class MembershipPlanController {
     }
 
     static findById(request: Request, response: Response) {
-        let id = request.params.id
+        let id = parseInt(request.params.id);
         MembershipPlanService.findById(id )
             .then((result) => {
                 response.status(200).json(result);
@@ -77,7 +77,7 @@ class MembershipPlanController {
     }
 
     static update(request: Request, response: Response) {
-        let id = request.params.id;
+        let id = parseInt(request.params.id);
         let payload = request.body;
         const schema = z.object({
             id: z.string(),
@@ -102,7 +102,7 @@ class MembershipPlanController {
 
 
     static remove(request: Request, response: Response) {
-        let id = request.params.id;
+        let id = parseInt(request.params.id);
         MembershipPlanService.remove(id)
             .then((result) => { response.status(200).json(result) })
             .catch((error) => response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message }))

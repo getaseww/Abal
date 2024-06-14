@@ -30,7 +30,7 @@ class SubscriptionService {
 
 
 
-    findById(id:any) {
+    findById(id:number) {
         return new Promise((resolve, reject) => {
             SubscriptionDal.findById(id).then((result) => resolve(result))
                 .catch((error) => reject(new CustomError(error, 500, "Internal Server Error")))
@@ -44,7 +44,7 @@ class SubscriptionService {
         })
     }
 
-    update(id:string, payload:any) {
+    update(id:number, payload:any) {
         return new Promise((resolve, reject) => {
             async.waterfall([
                 (done:Function) => {
@@ -81,7 +81,7 @@ class SubscriptionService {
         })
     }
 
-    remove(id:string) {
+    remove(id:number) {
         return new Promise((resolve, reject) => {
             SubscriptionDal.remove({ id})
                 .then((result) => {

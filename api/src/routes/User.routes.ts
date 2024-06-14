@@ -1,18 +1,19 @@
 import express, { Router } from "express";
 import UserController from "../controllers/User.controller";
-import { generateToken, authentication, response } from '../middlewares/authentication.middleware';
+import { generateToken, authentication, response, authenticateHeader } from '../middlewares/authentication.middleware';
 
 let router: Router = express.Router();
 
 router.post("/register", UserController.create, generateToken, response)
+    .post("/create", authenticateHeader, UserController.create, generateToken, response)
     .post("/login", authentication, generateToken, response)
-    .get("/", UserController.findAll)
+    .get("/",authenticateHeader, UserController.findAll)
 
-    .get("/:id", UserController.findById)
+    .get("/:id", authenticateHeader,UserController.findById)
 
-    .put("/", UserController.update)
+    .put("/", authenticateHeader,UserController.update)
 
-    .delete("/:id", UserController.remove)
+    .delete("/:id", authenticateHeader,UserController.remove)
 
 
 export default router;

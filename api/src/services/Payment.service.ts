@@ -30,7 +30,7 @@ class PaymentService {
 
 
 
-    findById(id:any) {
+    findById(id:number) {
         return new Promise((resolve, reject) => {
             PaymentDal.findById(id).then((result) => resolve(result))
                 .catch((error) => reject(new CustomError(error, 500, "Internal Server Error")))
@@ -44,7 +44,7 @@ class PaymentService {
         })
     }
 
-    update(id:string, payload:any) {
+    update(id:number, payload:any) {
         return new Promise((resolve, reject) => {
             async.waterfall([
                 (done:Function) => {
@@ -81,7 +81,7 @@ class PaymentService {
         })
     }
 
-    remove(id:string) {
+    remove(id:number) {
         return new Promise((resolve, reject) => {
             PaymentDal.remove({ id})
                 .then((result) => {

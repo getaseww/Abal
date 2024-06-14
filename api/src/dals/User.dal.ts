@@ -1,3 +1,7 @@
+import { MembershipPlan } from '../models/MembershipPlan';
+import { Payment } from '../models/Payment';
+import { Profile } from '../models/Profile';
+import { Subscription } from '../models/Subscription';
 import { User } from '../models/User';
 
 class UserDal {
@@ -13,6 +17,16 @@ class UserDal {
         return new Promise((resolve, reject) => {
             User.findAll({
                 where: query,
+                include: [
+                    User,
+                    { model: Payment, as: "member_payments" },
+                    Payment,
+                    { model: Subscription, as: "member_subscriptions" },
+                    Subscription,
+                    MembershipPlan,
+                    Profile
+
+                ]
                 // orderBy:[
                 //     {
                 //         createdAt:'asc'
@@ -38,7 +52,7 @@ class UserDal {
         });
     }
 
-    findById = (id: string) => {
+    findById = (id: number) => {
         return new Promise((resolve, reject) => {
             User.findOne({
                 where: { id },

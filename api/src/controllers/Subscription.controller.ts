@@ -19,7 +19,7 @@ class SubscriptionController {
             const data = request.body;
             const user: any = request.user;
             data.user_id = user.id
-            
+
             const schemaResult = schema.safeParse(data)
             if (!schemaResult.success) {
                 response.status(404).json(schemaResult);
@@ -39,7 +39,7 @@ class SubscriptionController {
 
     }
     static findById(request: Request, response: Response) {
-        let id = request.params.id
+        let id = parseInt(request.params.id);
         SubscriptionService.findById(id)
             .then((result: Subscription) => {
                 response.status(200).json(result);
@@ -76,7 +76,7 @@ class SubscriptionController {
     }
 
     static update(request: Request, response: Response) {
-        let id = request.params.id;
+        let id = parseInt(request.params.id);
         let payload = request.body;
         const schema = z.object({
             id: z.number(),
@@ -105,7 +105,7 @@ class SubscriptionController {
 
 
     static remove(request: Request, response: Response) {
-        let id = request.params.id;
+        let id = parseInt(request.params.id);
         SubscriptionService.remove(id)
             .then((result) => { response.status(200).json(result) })
             .catch((error) => response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message }))

@@ -37,7 +37,7 @@ class RoleDal {
         });
     }
 
-    findById = (id: string) => {
+    findById = (id: number) => {
         return new Promise((resolve, reject) => {
             Role.findOne({
                 where: { id },
@@ -51,15 +51,15 @@ class RoleDal {
         });
     }
 
-    update = (Role:Role, payload:any) => {
+    update = (role:Role, payload:any) => {
         return new Promise((resolve, reject) => {
-            if (Role) {
-                // if (payload.firstName) Role.firstName = payload.firstName;
+            if (role) {
+                if (payload.name) role.name = payload.name;
                 // if (payload.lastName) Role.lastName = payload.lastName;
                 // if (payload.email) Role.email = payload.email;
 
 
-               Role.save()
+               role.save()
                     .then((result:Role) => {
                         if (result) {
                             resolve(result)
