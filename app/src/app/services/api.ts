@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react'
 import { RootState } from '../store'
+import { MAIN_API_URL } from '../../constants/constants'
 
 // Create our baseQuery instance
 const baseQuery = fetchBaseQuery({
-  baseUrl: '/',
+  baseUrl: MAIN_API_URL,
   prepareHeaders: (headers, { getState }) => {
     // By default, if we have a token in the store, let's use that for authenticated requests
     const token = (getState() as RootState).auth.token
@@ -50,6 +51,6 @@ export const api = createApi({
 
 export const enhancedApi = api.enhanceEndpoints({
   endpoints: () => ({
-    getPost: () => 'test',
+    // getPost: () => 'test',
   }),
 })

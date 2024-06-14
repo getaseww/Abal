@@ -5,9 +5,9 @@ import {User} from '../models/User';
 
 
 export const authentication = (req: Request, res: Response, next: Function) => {
-    if (!req.body.email) {
+    if (!req.body.phone_number) {
         return res.status(400).json({
-            message: "email is required!",
+            message: "Phone Number is required!",
         });
     }
     if (!req.body.password) {
@@ -26,14 +26,14 @@ export const authentication = (req: Request, res: Response, next: Function) => {
         } else if (!user) {
             return res
                 .status(401)
-                .json({ message: "Login Failed: Invalid Email or password!" });
+                .json({ message: "Login Failed: Invalid Phone Number or password!" });
         } else {
             req.logIn(user, { session: false }, (error) => {
                 console.log("ER >>>  ", error);
                 if (error) {
                     return res
                         .status(401)
-                        .json({ message: "Login Failed: Invalid Email or password!" });
+                        .json({ message: "Login Failed: Invalid Phone number or password!" });
                 } else {
                     console.log("success", user)
                     req.user = user;
@@ -49,9 +49,9 @@ export const response = (req: any, res: Response) => {
     let user: User = req.user;
     res.status(200).json({
         token: req.token,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        phone_number: user.phone_number,
         id: user.id,
     });
 };
@@ -114,7 +114,7 @@ export const generateToken = (req: any, res: Response, next: Function) => {
     req.token = jwt.sign(
         {
             id: user.id,
-            email: user.email,
+            phone_number: user.phone_number,
         },
         process.env.TOKEN_KEY
     );

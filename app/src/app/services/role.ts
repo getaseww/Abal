@@ -12,7 +12,6 @@ type RolesResponse = Role[]
 
 export const rolesApi = api.injectEndpoints({
     endpoints: (build) => ({
-
         getRoles: build.query<RolesResponse, void>({
             query: () => ({ url: 'role' }),
             providesTags: (result = []) => [
@@ -68,5 +67,5 @@ export const {
 } = rolesApi
 
 export const {
-    endpoints: { getRole },
+    endpoints: { getRole,getRoles },
 } = rolesApi

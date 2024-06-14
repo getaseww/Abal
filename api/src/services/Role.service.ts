@@ -10,8 +10,7 @@ class RoleService {
                 (done: Function) => {
                     RoleDal.create(payload).then((result) => done(null, result))
                         .catch((error) => {
-                            console.log(error);
-                            done(error, null)
+                            done(new CustomError(error,500,"Bad Request"), null)
                         })
                 }
             ], (error: any, result: any) => {

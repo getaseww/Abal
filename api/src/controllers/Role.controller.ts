@@ -5,10 +5,10 @@ import { z } from 'zod'
 import RoleService from "../services/Role.service";
 import { Role } from "../models/Role";
 
+
 class RoleController {
 
     static create(request: Request, response: Response) {
-
         const schema = z.object({
             name: z.string(),
         })
@@ -17,19 +17,19 @@ class RoleController {
         try {
             const schemaResult = schema.safeParse(data)
             if (!schemaResult.success) {
-                response.status(404).json(schemaResult);
+                response.status(400).json(schemaResult);
+            } else {
+                RoleService.create(data)
+                    .then((result: Role) => {
+                        response.status(201).json({ data: result, message: "Created Successfully!" });
+                    })
+                    .catch((error: Error) => {
+                        response.status(error.statusCode).json({ error: error.errorCode, message: error.message });
+                    });
             }
-            RoleService.create(data)
-                .then((result: Role) => {
-                    response.status(200).json(result);
-                })
-                .catch((error: Error) => {
-                    
-                    response.status(401).json(error);
-                });
+
         } catch (error) {
-            let err = new BadRequestError(JSON.stringify(error));
-            response.status(error.statusCode).json({ "error": err.errorCode, "message": err.message });
+            response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });
         }
 
     }
@@ -97,7 +97,6 @@ class RoleController {
         // res.status(error.status).json(error.message);
         // }
     }
-
 
     static remove(request: Request, response: Response) {
         let id = request.params.id;

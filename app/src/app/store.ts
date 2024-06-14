@@ -3,14 +3,14 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { api } from './services/api'
 import auth from '../features/auth/authSlice'
 
+
 export const createStore = (
   options?: ConfigureStoreOptions['preloadedState'] | undefined,
 ) =>
   configureStore({
     reducer: {
       [api.reducerPath]: api.reducer,
-    //   polling,
-      auth,
+      auth
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(api.middleware),
