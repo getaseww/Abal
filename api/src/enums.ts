@@ -9,3 +9,9 @@ enum PaymentStatus{
     Canceled
 }
 
+export enum Role{
+    ADMIN="Admin",
+    OWNER="Owner",
+    MEMBER="Member"
+}
+

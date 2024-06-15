@@ -59,6 +59,7 @@ class MembershipPlanDal {
                 if (payload.description) membership_plan.description = payload.description;
                 if (payload.max_member) membership_plan.max_member = payload.max_member;
                 if (payload.price) membership_plan.price = payload.price;
+                if (payload.access_level) membership_plan.access_level = payload.access_level;
 
 
                 membership_plan.save()

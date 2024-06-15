@@ -40,10 +40,10 @@ class ProfileController {
     static findById(request: Request, response: Response) {
         let id = parseInt(request.params.id);
         ProfileService.findById(id)
-            .then((result: Profile) => {
-                response.status(200).json(result);
+            .then((result) => {
+                response.status(200).json({ status: "success", data: result, message: "fetched successfully!" })
             }).catch((error) => {
-                response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });
+                response.status(500).json({ status: "failed", message: "Failed to fetch data!", error });
             })
     }
 
@@ -53,10 +53,10 @@ class ProfileController {
             query = { ...query, name: request.query.name }
 
         ProfileService.findOne(query)
-            .then((result: Profile) => {
-                response.status(200).json(result);
+            .then((result) => {
+                response.status(200).json({ status: "success", data: result, message: "fetched successfully!" })
             }).catch((error) => {
-                response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });
+                response.status(500).json({ status: "failed", message: "Failed to fetch data!", error });
             })
     }
 
@@ -66,11 +66,10 @@ class ProfileController {
             query = { ...query, name: request.query.name }
 
         ProfileService.findAll(query)
-            .then((result: Profile[]) => {
-                response.status(200).json(result)
-            })
-            .catch((error: Error) => {
-                response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });
+            .then((result) => {
+                response.status(200).json({ status: "success", data: result, message: "fetched successfully!" })
+            }).catch((error) => {
+                response.status(500).json({ status: "failed", message: "Failed to fetch data!", error });
             })
     }
 

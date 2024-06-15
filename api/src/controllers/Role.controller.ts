@@ -36,10 +36,10 @@ class RoleController {
     static findById(request: Request, response: Response) {
         let id = parseInt(request.params.id);
         RoleService.findById(id)
-            .then((result: Role) => {
-                response.status(200).json(result);
+            .then((result) => {
+                response.status(200).json({ status: "success", data: result, message: "fetched successfully!" })
             }).catch((error) => {
-                response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });
+                response.status(500).json({ status: "failed", message: "Failed to fetch data!", error });
             })
     }
 
@@ -49,10 +49,10 @@ class RoleController {
             query = { ...query, name: request.query.name }
 
         RoleService.findOne(query)
-            .then((result: Role) => {
-                response.status(200).json(result);
+            .then((result) => {
+                response.status(200).json({ status: "success", data: result, message: "fetched successfully!" })
             }).catch((error) => {
-                response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });
+                response.status(500).json({ status: "failed", message: "Failed to fetch data!", error });
             })
     }
 

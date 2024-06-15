@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
 import MembershipPlanService from "../services/MembershipPlan.service";
 import { MembershipPlan as MembershipPlanType, Error } from "../types";
-import { BadRequestError } from "../errors/errors";
+import { BadRequestError, ErrorMessages, ErrorStatusNumber } from "../errors/errors";
 import { z } from 'zod'
+import logger from '../utils/loggers/winston'
+import { Role } from "../enums";
 
 class MembershipPlanController {
 
@@ -11,10 +13,11 @@ class MembershipPlanController {
         const schema = z.object({
             name: z.string(),
             description: z.string().optional(),
-            price:z.number(),
-            duration:z.string(),
-            max_member:z.number(),
-            image:z.string().optional()
+            price: z.number(),
+            duration: z.number(),
+            access_level: z.number(),
+            max_member: z.number().optional(),
+            image: z.string().optional()
         })
 
 
@@ -23,14 +26,21 @@ class MembershipPlanController {
             const user: any = request.user;
             data.user_id = user.id
 
-            schema.parseAsync(data)
-            MembershipPlanService.create(data)
-                .then((result: MembershipPlanType) => {
-                    response.status(200).json(result);
-                })
-                .catch((error: Error) => {
-                    response.status(error.statusCode).json(error.message);
-                });
+
+            const schemaResult: any = schema.safeParse(data)
+            if (!schemaResult.success) {
+                logger.error(`Faile to create Membership plan: ${schemaResult.error}`);
+                response.status(ErrorStatusNumber.badRequestError).json({ status: "failed", error: schemaResult.error, message: ErrorMessages.badRequestError });
+            } else {
+
+                MembershipPlanService.create(data)
+                    .then((result: MembershipPlanType) => {
+                        response.status(200).json(result);
+                    })
+                    .catch((error: Error) => {
+                        response.status(error.statusCode).json(error.message);
+                    });
+            }
         } catch (error) {
             let err = new BadRequestError(JSON.stringify(error));
 
@@ -42,11 +52,11 @@ class MembershipPlanController {
 
     static findById(request: Request, response: Response) {
         let id = parseInt(request.params.id);
-        MembershipPlanService.findById(id )
+        MembershipPlanService.findById(id)
             .then((result) => {
-                response.status(200).json(result);
+                response.status(200).json({ status: "success", data: result, message: "fetched successfully!" })
             }).catch((error) => {
-                response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });
+                response.status(500).json({ status: "failed", message: "Failed to fetch data!", error });
             })
     }
 
@@ -54,25 +64,30 @@ class MembershipPlanController {
         let query = {}
         if (request.query.quantity && request.query.quantity != "undefined")
             query = { ...query, quantity: request.query.quantity }
-            MembershipPlanService.findOne(query)
+        MembershipPlanService.findOne(query)
             .then((result) => {
-                response.status(200).json(result);
+                response.status(200).json({ status: "success", data: result, message: "fetched successfully!" })
             }).catch((error) => {
-                response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });
+                response.status(500).json({ status: "failed", message: "Failed to fetch data!", error });
             })
     }
 
     static findAll(request: Request, response: Response) {
+
         let query = {}
+        const user: any = request.user;
+        if (user?.role == Role.OWNER) {
+            query = { ...query, user_id: user.id }
+        }
+
         if (request.query.quantity && request.query.quantity != "undefined")
             query = { ...query, quantity: request.query.quantity }
 
-            MembershipPlanService.findAll(query)
+        MembershipPlanService.findAll(query)
             .then((result) => {
-                response.status(200).json(result)
-            })
-            .catch((error: Error) => {
-                response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });
+                response.status(200).json({ status: "success", data: result, message: "fetched successfully!" })
+            }).catch((error) => {
+                response.status(500).json({ status: "failed", message: "Failed to fetch data!", error });
             })
     }
 
@@ -84,7 +99,7 @@ class MembershipPlanController {
         })
         // const { error, value } = schema.validate({ id: id })
         // if (!error) {
-            MembershipPlanService.update(id, payload)
+        MembershipPlanService.update(id, payload)
             .then((result) => {
                 if (result) {
                     response.status(200).json(result)

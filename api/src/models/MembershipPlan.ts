@@ -1,11 +1,12 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
 
 export class MembershipPlan extends Model {
-    public id!: string;
+    public id!: number;
     public name!: string;
     public description!: string | null;
-    public duration!: string;
+    public duration!: number;
     public max_member!: number | null;
+    public access_level: number;
     public price!: number;
     public image!: string | null;
     public user_id!: number;
@@ -34,12 +35,16 @@ export default (sequelize: Sequelize) => {
                 allowNull: true,
             },
             duration: {
-                type: DataTypes.STRING,
-                allowNull: true,
+                type: DataTypes.INTEGER,
+                allowNull: false,
             },
             max_member: {
                 type: DataTypes.INTEGER,
                 allowNull: true,
+            },
+            access_level: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
             },
             price: {
                 type: DataTypes.FLOAT,

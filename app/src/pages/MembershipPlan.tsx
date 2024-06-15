@@ -2,9 +2,14 @@ import React from 'react'
 import { userStore } from '../store/userStore'
 import { useQuery } from '@tanstack/react-query'
 import { retrieveData } from '../utils/utils'
-import { Avatar, Card, Skeleton } from 'antd'
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons'
+import { Avatar, Card, Divider, Skeleton } from 'antd'
+import { DeleteOutlined, EditOutlined, EllipsisOutlined, EyeOutlined, SettingOutlined } from '@ant-design/icons'
 import Meta from 'antd/es/card/Meta'
+import AddMembershipPlan from '../components/MembershipPlan/AddMembershipPlan'
+import { t } from 'i18next'
+import EditMembershipPlan from '../components/MembershipPlan/EditMembershipPlan'
+import { MembershipPlanType } from '../@types/MembershipPlan'
+import MembershipItemCard from '../components/MembershipPlan/MembershipItemCard'
 
 export default function MembershipPlan() {
 
@@ -18,26 +23,18 @@ export default function MembershipPlan() {
         queryFn: () => retrieveData(`membership-plan`, header),
     })
 
+    console.log("membership plan", data)
+
     return (
-        <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {data?.map((item:any) => (
-                    <Card
-                        style={{ width: 300, marginTop: 16 }}
-                        actions={[
-                            <SettingOutlined key="setting" />,
-                            <EditOutlined key="edit" />,
-                            <EllipsisOutlined key="ellipsis" />,
-                        ]}
-                    >
-                        <Skeleton loading={isPending} avatar active>
-                            <Meta
-                                avatar={<Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=2" />}
-                                title="Card title"
-                                description="This is the description"
-                            />
-                        </Skeleton>
-                    </Card>
+        <div className='w-full'>
+            <div className='flex justify-between items-center px-3'>
+                <p>{t('membership_plan')}</p>
+                <AddMembershipPlan refetch={refetch} />
+            </div>
+            <Divider className='w-full borer' />
+            <div className="lg:px-50 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {data?.map((item: any) => (
+                    <MembershipItemCard refetch={refetch} is_pending={isPending} item_data={item} />
                 ))}
             </div>
         </div>

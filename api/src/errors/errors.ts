@@ -21,3 +21,15 @@ export class NotAuthenticatedError extends Error {
   }
 }
 
+
+
+export const ErrorStatusNumber = {
+  notFoundError: 404,
+  badRequestError: 400,
+  unAuthorized: 401
+}
+
+export const ErrorMessages = {
+  notFoundError: "Not Found",
+  badRequestError: "Bad Request"
+}

@@ -8,11 +8,21 @@ class MembershipPlanService {
         return new Promise((resolve, reject) => {
             async.waterfall([
                 (done: Function) => {
-                    MembershipPlanDal.create(payload).then((result) => done(null, result))
-                        .catch((error) => {
-                            console.log(error);
-                            done(error, null)
-                        })
+                    if (payload.id) {
+                        this.update(payload.id, payload)
+                            .then((result) => done(null, result))
+                            .catch((error) => {
+                                done(error, null)
+                            })
+                    } else {
+
+                        MembershipPlanDal.create(payload)
+                            .then((result) => done(null, result))
+                            .catch((error) => {
+                                console.log(error);
+                                done(error, null)
+                            })
+                    }
                 }
             ], (error: any, result: any) => {
                 if (error) reject(error)
@@ -28,26 +38,24 @@ class MembershipPlanService {
         })
     }
 
-
-
-    findById(id:number) {
+    findById(id: number) {
         return new Promise((resolve, reject) => {
             MembershipPlanDal.findById(id).then((result) => resolve(result))
                 .catch((error) => reject(new CustomError(error, 500, "Internal Server Error")))
         })
     }
 
-    findOne(query:any) {
+    findOne(query: any) {
         return new Promise((resolve, reject) => {
             MembershipPlanDal.findOne(query).then((result) => resolve(result))
                 .catch((error) => reject(new CustomError(error, 500, "Internal Server Error")))
         })
     }
 
-    update(id:number, payload:any) {
+    update(id: number, payload: any) {
         return new Promise((resolve, reject) => {
             async.waterfall([
-                (done:Function) => {
+                (done: Function) => {
                     MembershipPlanDal.findOne({ id })
                         .then((membershipPlan) => {
                             if (membershipPlan) {
@@ -61,7 +69,7 @@ class MembershipPlanService {
                             done(new CustomError(error, 500, "Internal Server Error"), null)
                         })
                 },
-                (membershipPlan:MembershipPlan, done:Function) => {
+                (membershipPlan: MembershipPlan, done: Function) => {
                     MembershipPlanDal.update(membershipPlan, payload)
                         .then((result) => {
                             if (result) {
@@ -74,16 +82,16 @@ class MembershipPlanService {
                             done(new CustomError(error, 500, "Internal Server Error"))
                         })
                 }
-            ], (error:any, result:any) => {
+            ], (error: any, result: any) => {
                 if (error) reject(error)
                 else resolve(result)
             })
         })
     }
 
-    remove(id:number) {
+    remove(id: number) {
         return new Promise((resolve, reject) => {
-            MembershipPlanDal.remove({ id})
+            MembershipPlanDal.remove({ id })
                 .then((result) => {
                     if (result) {
                         resolve(result)

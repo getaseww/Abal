@@ -3,6 +3,7 @@ import PaymentService from "../services/Payment.service";
 import { Payment, Error } from "../types";
 import { BadRequestError } from "../errors/errors";
 import { z } from 'zod'
+import { Role } from "../enums";
 
 class PaymentController {
 
@@ -46,10 +47,10 @@ class PaymentController {
     static findById(request: Request, response: Response) {
         let id = parseInt(request.params.id);
         PaymentService.findById(id)
-            .then((result: Payment) => {
-                response.status(200).json(result);
+            .then((result) => {
+                response.status(200).json({ status: "success", data: result, message: "fetched successfully!" })
             }).catch((error) => {
-                response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });
+                response.status(500).json({ status: "failed", message: "Failed to fetch data!", error });
             })
     }
 
@@ -59,24 +60,28 @@ class PaymentController {
             query = { ...query, name: request.query.name }
 
         PaymentService.findOne(query)
-            .then((result: Payment) => {
-                response.status(200).json(result);
+            .then((result) => {
+                response.status(200).json({ status: "success", data: result, message: "fetched successfully!" })
             }).catch((error) => {
-                response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });
+                response.status(500).json({ status: "failed", message: "Failed to fetch data!", error });
             })
     }
 
     static findAll(request: Request, response: Response) {
         let query = {}
+        const user: any = request.user;
+        if (user?.role == Role.OWNER) {
+            query = { ...query, user_id: user.id }
+        }
+
         if (request.query.name && request.query.name != "undefined")
             query = { ...query, name: request.query.name }
 
         PaymentService.findAll(query)
-            .then((result: Payment[]) => {
-                response.status(200).json(result)
-            })
-            .catch((error: Error) => {
-                response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });
+            .then((result) => {
+                response.status(200).json({ status: "success", data: result, message: "fetched successfully!" })
+            }).catch((error) => {
+                response.status(500).json({ status: "failed", message: "Failed to fetch data!", error });
             })
     }
 

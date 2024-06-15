@@ -16,10 +16,14 @@ class UserDal {
 
     findAll = (query: any) => {
         return new Promise((resolve, reject) => {
+            const { user, ...other } = query;
+
+            let user_query = {};
+            if (user) { user_query = user }
             User.findAll({
                 where: query,
                 include: [
-                    User,
+                    { model: User, where: user_query, required: true },
                     { model: Payment, as: "member_payments" },
                     Payment,
                     { model: Subscription, as: "member_subscriptions" },

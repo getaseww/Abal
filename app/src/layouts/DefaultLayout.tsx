@@ -9,7 +9,7 @@ export default function DefaultLayout() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
-        <div >
+        <div className="bg-[#F1F1F4]">
             <Header toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
             <div className="flex">
                 <Sidebar isOpen={sidebarOpen} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />

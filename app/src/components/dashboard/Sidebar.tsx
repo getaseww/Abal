@@ -32,31 +32,31 @@ export default function Sidebar({ isOpen, toggleSidebar }: { isOpen: boolean, to
 
             <nav className="mt-6">
                 <SidebarItem text="Dashboard" link={routes.DASHBOARD} />
-                {user.role == "Admin" &&
+                {user?.role == "Admin" &&
                     <SidebarItem text="Users" link={routes.MEMBER} />
                 }
                 {
-                    user.role == "Owner"
+                    user?.role == "Owner"
                     && <SidebarItem text="Memebers" link={routes.MEMBER} />
                 }
                 {
-                    user.role == "Admin"
+                    user?.role == "Admin"
                     && <SidebarItem text="Membership Plans" link={routes.MEMEBERSHIP_PLAN} />
                 }
                 {
-                    (user.role == "Admin" || user.role == "Owner")
-                    && <SidebarItem text="Subscriptions" link={routes.MEMBER} />
+                    (user?.role == "Admin" || user?.role == "Owner")
+                    && <SidebarItem text="Subscriptions" link={routes.SUBSCRIPTION} />
                 }
                 {
-                    (user.role == "Admin" || user.role == "Owner")
+                    (user?.role == "Admin" || user?.role == "Owner")
                     && <SidebarItem text="Payments" link={routes.MEMBER} />
                 }
                 {
-                    (user.role == "Admin" || user.role == "Owner")
+                    (user?.role == "Admin" || user?.role == "Owner")
                     && <SidebarItem text="Memebers" link={routes.MEMBER} />
                 }
 
-                {user.role == "Admin" && menus.map((menu, index) => (
+                {user?.role == "Admin" && menus.map((menu, index) => (
                     <Menu
                         key={index}
                         title={menu.title}

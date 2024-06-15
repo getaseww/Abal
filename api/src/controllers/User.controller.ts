@@ -3,6 +3,7 @@ import UserService from "../services/User.service";
 import { User, Error } from "../types";
 import { BadRequestError } from "../errors/errors";
 import { z } from 'zod'
+import { Role } from "../enums";
 
 class UserController {
 
@@ -44,9 +45,9 @@ class UserController {
         UserService.findById(id)
             .then((result: User) => {
                 const { password, ...data } = result;
-                response.status(200).json(data);
+                response.status(200).json({ status: "success", data, message: "fetched successfully!" })
             }).catch((error) => {
-                response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });
+                response.status(500).json({ status: "failed", message: "Failed to fetch data!", error });
             })
     }
 
@@ -58,24 +59,30 @@ class UserController {
         UserService.findOne(query)
             .then((result: User) => {
                 const { password, ...data } = result;
-                response.status(200).json(data);
+                response.status(200).json({ status: "success", data, message: "fetched successfully!" })
             }).catch((error) => {
-                response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });
+                response.status(500).json({ status: "failed", message: "Failed to fetch data!", error });
             })
     }
 
     static findAll(request: Request, response: Response) {
         let query = {}
+        const user: any = request.user;
+        if (user?.role == Role.OWNER) {
+            query = { ...query,  user_id: user.id }
+        }
+
+
         if (request.query.name && request.query.name != "undefined")
             query = { ...query, name: request.query.name }
 
         UserService.findAll(query)
             .then((result: User[]) => {
                 const data = result.map(({ password, ...rest }) => rest);
-                response.status(200).json(data)
+                response.status(200).json({ status: "success", data, message: "fetched successfully!" })
             })
             .catch((error: Error) => {
-                response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });
+                response.status(500).json({ status: "failed", message: "Failed to fetch data!", error });
             })
     }
 

@@ -12,6 +12,7 @@ import Login from './pages/Login';
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const DefaultLayout = lazy(() => import('./layouts/DefaultLayout'));
 const MembershipPlan = lazy(() => import('./pages/MembershipPlan'));
+const Subscription = lazy(() => import('./pages/Subscription'));
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
         <Route element={<DefaultLayout />}>
           <Route path="/" element={token != null && token != undefined ? <Dashboard /> : <Navigate to="/auth/login" replace={true} />} />
           <Route path="/dashboard/membership-plan" element={token != null && token != undefined ? <MembershipPlan /> : <Navigate to="/auth/login" replace={true} />} />
+          <Route path="/dashboard/subscription" element={token != null && token != undefined ? <Subscription /> : <Navigate to="/auth/login" replace={true} />} />
 
         </Route>
       </Routes>
