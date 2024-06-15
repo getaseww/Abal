@@ -1,11 +1,7 @@
 export enum Role {
     ADMIN = "Admin",
-    HEADOFFICE = "Headoffice",
-    DISTRICT = "District",
-    BRANCH = "Branch",
-    COMMUNITY = "Community",
-    RESIDENT = "Resident",
-    WOREDA = "Woreda"
+    OWNER = "Owner",
+    MEMBER = "Member"
 }
 
 export enum PaymentMethod {
@@ -62,4 +58,10 @@ export enum ResidentType {
 export enum PaidUnpaidStatus{
     PAID="Paid",
     UNPAID="Unpaid"
+}
+
+export const enum SMSSTATUS {
+    PENDING = "Pending",
+    APPPROVED = "Approved",
+    REJECTED = "Rejected"
 }
