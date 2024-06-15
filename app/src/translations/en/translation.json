@@ -956,5 +956,15 @@
     "please_select_member": "please_select_member",
     "please_select_membership_plan": "please_select_membership_plan",
     "view_subscription": "view_subscription",
-    "edit_subscription": "edit_subscription"
+    "edit_subscription": "edit_subscription",
+    "empty_first_name": "empty_first_name",
+    "first_name": "first_name",
+    "last_name": "last_name",
+    "empty_last_name": "empty_last_name",
+    "select_sex": "select_sex",
+    "sex": "sex",
+    "updated_successfully": "updated_successfully",
+    "failed_to_update": "failed_to_update",
+    "view_member": "view_member",
+    "edit_member": "edit_member"
 }

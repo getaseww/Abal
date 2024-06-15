@@ -6,6 +6,7 @@ let router: Router = express.Router();
 
 router.post("/register", UserController.create, generateToken, response)
     .post("/create", authenticateHeader, UserController.create, generateToken, response)
+    .post("/member/create", authenticateHeader, UserController.createMember, generateToken, response)
     .post("/login", authentication, generateToken, response)
     .get("/",authenticateHeader, UserController.findAll)
 

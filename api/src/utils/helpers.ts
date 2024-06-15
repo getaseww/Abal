@@ -21,3 +21,15 @@ export const paymentHeader = {
         Authorization: `Bearer ${process.env.CHAPA_SECRET_KEY}`,
     },
 };
+
+
+export const hashPassword = (password: any): any => {
+    const saltRounds = 10;
+  
+    return new Promise((resolve, reject) => {
+      bcrypt
+        .hash(password, saltRounds)
+        .then((result) => resolve(result))
+        .catch((error) => reject(error));
+    });
+  };

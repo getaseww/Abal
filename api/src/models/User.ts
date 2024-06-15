@@ -1,5 +1,7 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
 import { Role } from "./Role";
+import { hashPassword } from "../utils/helpers";
+import { Profile } from "./Profile";
 
 export class User extends Model {
   public id!: number;
@@ -9,7 +11,8 @@ export class User extends Model {
   public password!: string;
   public role_id!: string;
   public user_id!: string;
-  public role!: Role
+  public role!: Role;
+  public profile!:Profile;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -53,7 +56,19 @@ export default (sequelize: Sequelize) => {
       modelName: "user",
       tableName: "users",
     }
-  );
 
+    
+  );
+  User.beforeCreate((user, options) => {
+    if (user.password) {
+        return hashPassword(user.password)
+            .then((hashed: any) => {
+                user.password = hashed;
+            })
+            .catch((error: any) => {
+                throw new error;
+            });
+    }
+});
 
 };
