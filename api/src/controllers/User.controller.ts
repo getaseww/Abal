@@ -63,7 +63,7 @@ class UserController {
             const data = request.body;
             const user: any = request.user;
             data.user.user_id = user?.id ?? null
-            data.user.role_id = 2
+            data.user.role_id = 3
 
             const schemaResult = schema.safeParse(data)
             if (!schemaResult.success) {
@@ -71,10 +71,10 @@ class UserController {
             } else {
                 UserService.createMember(data)
                     .then((result: User) => {
-                        const { password, ...data } = result;
-                        response.status(200).json({ status: "success", data, message: "fetched successfully!" })
+                        response.status(200).json({ status: "success", data: result, message: "fetched successfully!" })
                     })
                     .catch((error: Error) => {
+                        console.log("user controller",error)
                         response.status(500).json({ status: "failed", message: "Failed to create data!", error });
                     });
             }
@@ -123,11 +123,12 @@ class UserController {
             query = { ...query, name: request.query.name }
 
         UserService.findAll(query)
-            .then((result: User[]) => {
-                const data = result.map(({ password, ...rest }) => rest);
-                response.status(200).json({ status: "success", data, message: "fetched successfully!" })
+            .then((result: any) => {
+                // const data = result.map(({ password, ...rest }) => rest);
+                response.status(200).json({ status: "success", data: result, message: "fetched successfully!" })
             })
             .catch((error: Error) => {
+                console.log("error from controller", error)
                 response.status(500).json({ status: "failed", message: "Failed to fetch data!", error });
             })
     }

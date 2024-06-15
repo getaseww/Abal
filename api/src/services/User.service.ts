@@ -45,7 +45,7 @@ class UserService {
         })
     }
 
-    createMember(payload: {user:User,profile:Profile}) {
+    createMember(payload: { user: User, profile: Profile }) {
         return new Promise((resolve, reject) => {
             async.waterfall([
                 (done: Function) => {
@@ -86,7 +86,10 @@ class UserService {
     findAll(query: any) {
         return new Promise((resolve, reject) => {
             UserDal.findAll(query).then((result) => resolve(result))
-                .catch((error) => reject(new CustomError(error, 500, "Internal Server Error")))
+                .catch((error) => {
+                    console.log("error from service", error)
+                    reject(new CustomError(error, 500, "Internal Server Error"))
+                })
         })
     }
 

@@ -1,3 +1,4 @@
+import { ProfileType } from "./Profile"
 import { RoleType } from "./Role"
 import { SubscriptionType } from "./Subscription"
 
@@ -14,5 +15,5 @@ export type UserType = {
     createdAt: Date,
     updatedAt?: Date,
     subscriptions: SubscriptionType[],
-    profile?: UserType
+    profile?: ProfileType
 }

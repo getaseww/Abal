@@ -9,6 +9,7 @@ export type SubscriptionType = {
     member_id: number;
     user_id: number;
     createdAt: Date,
+    status: string,
     updatedAt?: Date,
     subscriber: UserType
     membership_plan: MembershipPlanType

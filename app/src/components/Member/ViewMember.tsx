@@ -9,19 +9,20 @@ import { t } from 'i18next';
 import SidePanel from '../SidePanel';
 import TextArea from 'antd/es/input/TextArea';
 import { EditOutlined, EyeOutlined } from '@ant-design/icons';
+import { UserType } from '../../@types/User';
 
-export default function ViewMember({ record }: { record: MembershipPlanType }) {
+export default function ViewMember({ record }: { record: UserType }) {
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
 
     return (
         <div className=''>
-            <SidePanel is_title_row={true} isText={false} open={open} setOpen={setOpen} title={t('view_member')} button_title={<><EyeOutlined /></>}>
+            <SidePanel is_title_row={false} isText={true} open={open} setOpen={setOpen} title={t('view_member')} button_title={<><EyeOutlined /> {t('view')}</>}>
                 <Form onFinish={() => { }}
                     name="view_member_form"
                     layout="vertical"
                     form={form}
-                    initialValues={{ ...record }}
+                    initialValues={{ ...record, sex: record?.profile?.sex, address: record?.profile?.address }}
                 // disabled={true}
                 >
 
@@ -30,7 +31,7 @@ export default function ViewMember({ record }: { record: MembershipPlanType }) {
                             { required: true, message: t('empty_first_name') }
                         ]}
                     >
-                        <Input  readOnly className='p-2' />
+                        <Input readOnly className='p-2' />
                     </Form.Item>
                     <Form.Item label={t('last_name')} name="last_name"
                         rules={[

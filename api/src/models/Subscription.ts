@@ -1,4 +1,5 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
+import { SubscriptionStatus } from "../enums";
 
 export class Subscription extends Model {
   public id!: number;
@@ -7,7 +8,7 @@ export class Subscription extends Model {
   public membership_plan_id!: number;
   public start_date!: Date;
   public end_date!: Date;
-  public status!: string;
+  public status!: SubscriptionStatus.ACTIVE | SubscriptionStatus.INACTIVE | SubscriptionStatus.EXPIRED | SubscriptionStatus.CANCELLED;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -41,8 +42,12 @@ export default (sequelize: Sequelize) => {
         allowNull: false,
       },
       status: {
-        type: DataTypes.STRING,
-        allowNull: true,
+        type: DataTypes.ENUM(SubscriptionStatus.ACTIVE,
+          SubscriptionStatus.INACTIVE,
+          SubscriptionStatus.EXPIRED,
+          SubscriptionStatus.CANCELLED),
+        allowNull: false,
+        defaultValue: SubscriptionStatus.ACTIVE
       },
     },
     {

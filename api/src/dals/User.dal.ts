@@ -22,8 +22,11 @@ class UserDal {
             if (user) { user_query = user }
             User.findAll({
                 where: query,
+                attributes: { exclude: ['password'] },
                 include: [
-                    { model: User, where: user_query, required: true },
+                    {
+                        model: User, where: user_query, required: true, attributes: { exclude: ['password'] },
+                    },
                     { model: Payment, as: "member_payments" },
                     Payment,
                     { model: Subscription, as: "member_subscriptions" },
@@ -39,7 +42,10 @@ class UserDal {
                 // ]
             })
                 .then((result: User[]) => resolve(result))
-                .catch((error: any) => reject(error));
+                .catch((error: any) => {
+                    console.log("user error", error)
+                    reject(error)
+                });
         })
     }
 

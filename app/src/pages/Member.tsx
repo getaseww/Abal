@@ -8,10 +8,11 @@ import { Button, Divider, Popconfirm, Popover, TableProps } from 'antd'
 import toast from 'react-hot-toast'
 import { t } from 'i18next'
 import { format } from 'date-fns'
-import EditMember from '../components/Member/EditMembershipPlan'
-import ViewMember from '../components/Member/ViewMembership'
+import EditMember from '../components/Member/EditMember'
+import ViewMember from '../components/Member/ViewMember'
 import AddMember from '../components/Member/AddMember'
 import CustomTable from '../components/Table/CustomTable'
+import { DeleteOutlined } from '@ant-design/icons'
 
 export default function Member() {
   const token = userStore((state: any) => state.token)
@@ -54,7 +55,28 @@ export default function Member() {
     {
       title: `${t('no')}`,
       key: 'index',
+      width:"70px",
       render: (text, record, index) => index + 1,
+    },
+    {
+      title: t('full_name'),
+      key: 'full_name',
+      sorter: (a, b) => (a.first_name + " " + a.last_name).localeCompare(b.first_name + " " + b.last_name),
+      sortOrder: sortedInfo.columnKey === 'full_name' ? sortedInfo.order : null,
+      render: (value, record) => <>{record.first_name} {record.last_name}</>,
+
+    },
+    {
+      title: t('phone_number'),
+      dataIndex: 'phone_number',
+      key: 'phone_number',
+      sorter: (a, b) => a.phone_number.localeCompare(b.phone_number),
+      sortOrder: sortedInfo.columnKey === 'phone_number' ? sortedInfo.order : null,
+    },
+    {
+      title: t('sex'),
+      key: 'sex',
+      render: (value, record) => <>{record?.profile?.sex}</>
     },
     {
       title: `${t('created_at')}`,
@@ -79,18 +101,17 @@ export default function Member() {
             <div className='flex flex-col'>
               <EditMember refetch={refetch} record={record} />
               <ViewMember record={record} />
-              <Popconfirm
+              {/* <Popconfirm
                 title={t('delete_the_data')}
                 description={t('confirm_deletion')}
                 onConfirm={() => handleDelete(record.id)}
-                // onCancel={cancel}
                 okText={t('yes')}
                 cancelText={t('no')}
                 okButtonProps={{ style: { background: "green", color: "white", border: "3px" } }} // Customize the "Yes" button styles
                 cancelButtonProps={{ style: { background: "red", color: "white" } }}
               >
-                <Button danger type="text">{t('delete')}</Button>
-              </Popconfirm>
+                <Button danger type="text"><DeleteOutlined />{t('delete')}</Button>
+              </Popconfirm> */}
             </div>
           }
           trigger="click"
@@ -119,5 +140,6 @@ export default function Member() {
       <div className="lg:px-20 ">
         <CustomTable column={columns} data={data} handleChange={handleChange} />
       </div>
-    </div>)
+    </div>
+    )
 }

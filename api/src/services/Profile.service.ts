@@ -8,10 +8,19 @@ class ProfileService {
         return new Promise((resolve, reject) => {
             async.waterfall([
                 (done: Function) => {
-                    ProfileDal.create(payload).then((result) => done(null, result))
-                        .catch((error) => {
-                            done(new CustomError(error, 500, "Bad Request"), null)
-                        })
+                    if (payload.id) {
+                        this.update(payload.id, payload)
+                            .then((result) => done(null, result))
+                            .catch((error) => {
+                                done(new CustomError(error, 500, "Internal Server Error"), null)
+                            })
+                    } else {
+                        ProfileDal.create(payload)
+                            .then((result) => done(null, result))
+                            .catch((error) => {
+                                done(new CustomError(error, 500, "Bad Request"), null)
+                            })
+                    }
                 }
             ], (error: any, result: any) => {
                 if (error) reject(error)

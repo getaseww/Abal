@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import SubscriptionService from "../services/Subscription.service";
 import { Subscription, Error } from "../types";
-import { BadRequestError } from "../errors/errors";
+import { BadRequestError, ErrorMessages } from "../errors/errors";
 import { z } from 'zod'
 import { Role } from "../enums";
 
@@ -10,31 +10,33 @@ class SubscriptionController {
     static create(request: Request, response: Response) {
 
         const schema = z.object({
-            status: z.string(),
+            member_id: z.number(),
             membership_plan_id: z.number(),
-            start_date: z.date(),
-            end_date: z.date(),
+            start_date: z.date().optional(),
+            end_date: z.date().optional(),
         })
 
         try {
             const data = request.body;
             const user: any = request.user;
             data.user_id = user.id
+            data.start_date = new Date()
+            data.end_date = new Date()
 
             const schemaResult = schema.safeParse(data)
             if (!schemaResult.success) {
-                response.status(404).json(schemaResult);
+                response.status(400).json({ status: "failed", message: ErrorMessages.badRequestError, error: ErrorMessages.badRequestError });
+            } else {
+                SubscriptionService.create(data)
+                    .then((result: Subscription) => {
+                        response.status(200).json({ status: "success", data: result, message: "fetched successfully!" })
+                    })
+                    .catch((error: Error) => {
+                        response.status(500).json({ status: "failed", message: "Failed to fetch data!", error });
+                    });
             }
-            SubscriptionService.create(data)
-                .then((result: Subscription) => {
-                    response.status(200).json(result);
-                })
-                .catch((error: Error) => {
-
-                    response.status(401).json(error);
-                });
         } catch (error) {
-            let err = new BadRequestError(JSON.stringify(error));
+            let err = new BadRequestError(error);
             response.status(error.statusCode).json({ "error": err.errorCode, "message": err.message });
         }
 
@@ -69,6 +71,14 @@ class SubscriptionController {
 
     static findAll(request: Request, response: Response) {
         let query = {}
+        const user: any = request.user;
+        if (user?.role == Role.OWNER) {
+            query = { ...query, user_id: user.id }
+        }
+        if (request.query.member_id) {
+            query = { ...query, member_id: request.query.member_id }
+        }
+
         if (request.query.name && request.query.name != "undefined")
             query = { ...query, name: request.query.name }
 

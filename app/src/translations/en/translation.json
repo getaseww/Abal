@@ -966,5 +966,8 @@
     "updated_successfully": "updated_successfully",
     "failed_to_update": "failed_to_update",
     "view_member": "view_member",
-    "edit_member": "edit_member"
+    "edit_member": "edit_member",
+    "view": "View",
+    "payment_date": "payment_date",
+    "please_select_date": "please_select_date"
 }

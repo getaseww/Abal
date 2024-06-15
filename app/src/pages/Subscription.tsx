@@ -13,6 +13,7 @@ import { format } from 'date-fns'
 import AddSubscription from '../components/Subscription/AddSubscription'
 import EditSubscription from '../components/Subscription/EditSubscription'
 import ViewSubscription from '../components/Subscription/ViewSubscription'
+import { DeleteOutlined } from '@ant-design/icons'
 
 
 export default function Subscription() {
@@ -57,7 +58,30 @@ export default function Subscription() {
     {
       title: `${t('no')}`,
       key: 'index',
+      width: "70px",
       render: (text, record, index) => index + 1,
+    },
+
+    {
+      title: t('full_name'),
+      key: 'full_name',
+      sorter: (a, b) => (a?.subscriber?.first_name + " " + a?.subscriber?.last_name).localeCompare(b?.subscriber?.first_name + " " + b?.subscriber?.last_name),
+      sortOrder: sortedInfo.columnKey === 'full_name' ? sortedInfo.order : null,
+      render: (value, record) => <>{record?.subscriber?.first_name} {record?.subscriber?.last_name}</>,
+
+    },
+    {
+      title: t('phone_number'),
+      key: 'phone_number',
+      sorter: (a, b) => a?.subscriber?.phone_number.localeCompare(b?.subscriber?.phone_number),
+      sortOrder: sortedInfo.columnKey === 'phone_number' ? sortedInfo.order : null,
+      render: (value, record) => <>{record?.subscriber?.phone_number}</>
+    },
+
+    {
+      title: t('status'),
+      key: 'status',
+      render: (value, record) => <>{record?.status}</>
     },
     {
       title: `${t('created_at')}`,
@@ -92,7 +116,7 @@ export default function Subscription() {
                 okButtonProps={{ style: { background: "green", color: "white", border: "3px" } }} // Customize the "Yes" button styles
                 cancelButtonProps={{ style: { background: "red", color: "white" } }}
               >
-                <Button danger type="text">{t('delete')}</Button>
+                <Button danger type="text"><DeleteOutlined />{t('delete')}</Button>
               </Popconfirm>
             </div>
           }

@@ -34,7 +34,7 @@ export default function ViewSubscription({ record }: { record: SubscriptionType 
 
     return (
         <div className=''>
-            <SidePanel is_title_row={true} isText={false} open={open} setOpen={setOpen} title={t('view_subscription')} button_title={<><EyeOutlined /></>}>
+            <SidePanel is_title_row={false} isText={true} open={open} setOpen={setOpen} title={t('view_subscription')} button_title={<><EyeOutlined /> {t('view')}</>}>
                 <Form onFinish={() => { }}
                     name="view_subscription_form"
                     layout="vertical"

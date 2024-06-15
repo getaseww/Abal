@@ -9,8 +9,9 @@ import { t } from 'i18next';
 import SidePanel from '../SidePanel';
 import TextArea from 'antd/es/input/TextArea';
 import { EditOutlined } from '@ant-design/icons';
+import { UserType } from '../../@types/User';
 
-export default function EditMember({ record, refetch }: { record: MembershipPlanType, refetch: Function }) {
+export default function EditMember({ record, refetch }: { record: UserType, refetch: Function }) {
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
     const token = userStore((state: any) => state.token)
@@ -36,8 +37,10 @@ export default function EditMember({ record, refetch }: { record: MembershipPlan
 
     const submitData = (value: any) => {
         const data = {
-            user: { ...value },
-            profile: { sex: value.sex, address: value.address }
+            user: {
+                ...value, id: record.id,
+            },
+            profile: { id: record?.profile?.id, sex: value.sex, address: value.address }
         }
         postMutation.mutate(data);
     };
@@ -45,7 +48,7 @@ export default function EditMember({ record, refetch }: { record: MembershipPlan
 
     return (
         <div className=''>
-            <SidePanel is_title_row={true} isText={false} open={open} setOpen={setOpen} title={t('edit_member')} button_title={<><EditOutlined /></>}>
+            <SidePanel is_title_row={false} isText={true} open={open} setOpen={setOpen} title={t('edit_member')} button_title={<><EditOutlined /> {t('edit')}</>}>
                 <Form onFinish={submitData}
                     name="edit_member_form"
                     layout="vertical"

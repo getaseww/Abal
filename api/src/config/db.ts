@@ -1,4 +1,4 @@
-import { Sequelize } from 'sequelize';
+import { Sequelize, Transaction } from 'sequelize';
 import env from 'dotenv';
 import UserFactory, { User } from '../models/User';
 import MembershipPlanFactory, { MembershipPlan } from '../models/MembershipPlan';
@@ -6,6 +6,7 @@ import PaymentFactory, { Payment } from '../models/Payment';
 import SubscriptionFactory, { Subscription } from '../models/Subscription';
 import RoleFactory, { Role } from '../models/Role';
 import ProfileFactory, { Profile } from '../models/Profile';
+import { SMSTables } from '../modules/sms/models';
 
 env.config()
 
@@ -26,8 +27,8 @@ export default async () => {
   PaymentFactory(sequelize);
   RoleFactory(sequelize);
   ProfileFactory(sequelize);
+  SMSTables(sequelize);
 
-  
   User.hasMany(User, { foreignKey: { name: "user_id", allowNull: true } })
   User.belongsTo(User, { foreignKey: { name: "user_id", allowNull: true } })
   User.hasOne(Profile, { foreignKey: { name: "user_id", allowNull: true } })
@@ -74,3 +75,15 @@ export default async () => {
     });
 };
 
+
+export const createTransaction = (): Promise<Transaction> => {
+  return new Promise(async (resolve, reject) => {
+    sequelize
+      .transaction()
+      .then((transaction) => {
+        console.log("creating transaction")
+        resolve(transaction)
+      })
+      .catch((error) => reject(error));
+  });
+};

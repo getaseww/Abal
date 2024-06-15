@@ -5,6 +5,7 @@ export class Payment extends Model {
   public amount!: number;
   public trx_ref!: string;
   public status!: string;
+  public date!: Date;
   public subscription_id!: number;
   public member_id!: number;
   public user_id!: number;
@@ -39,6 +40,10 @@ export default (sequelize: Sequelize) => {
       },
       member_id: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      date: {
+        type: DataTypes.DATE,
         allowNull: false,
       },
     },

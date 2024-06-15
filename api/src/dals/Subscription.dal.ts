@@ -1,37 +1,44 @@
+import { MembershipPlan } from "../models/MembershipPlan";
 import { Subscription } from "../models/Subscription";
+import { User } from "../models/User";
 
 class SubscriptionDal {
-    create(payload:any) {
+    create(payload: any) {
         return new Promise((resolve, reject) => {
             Subscription.create(payload)
-                .then((result:Subscription) => resolve(result))
-                .catch((error:any) => reject(error));
+                .then((result: Subscription) => resolve(result))
+                .catch((error: any) => reject(error));
         });
     }
 
-    findAll = (query:any) => {
+    findAll = (query: any) => {
         return new Promise((resolve, reject) => {
             Subscription.findAll({
                 where: query,
+                include: [
+                    { model: User, as: "subscriber" },
+                    { model: MembershipPlan, }
+                ]
                 // orderBy:[
                 //     {
                 //         createdAt:'asc'
                 //     }
                 // ]
             })
-                .then((result:Subscription[]) => resolve(result))
-                .catch((error:any) => reject(error));
+                .then((result: Subscription[]) => resolve(result))
+                .catch((error: any) => reject(error));
         })
     }
 
-    findOne = (query:any) => {
+    findOne = (query: any) => {
         return new Promise((resolve, reject) => {
             Subscription.findOne({
                 where: query,
             })
-                .then((result:Subscription) => {
-                    resolve(result)})
-                .catch((error:any) => {
+                .then((result: Subscription) => {
+                    resolve(result)
+                })
+                .catch((error: any) => {
                     reject(error)
                 });
         });
@@ -51,7 +58,7 @@ class SubscriptionDal {
         });
     }
 
-    update = (subscription:Subscription, payload:any) => {
+    update = (subscription: Subscription, payload: any) => {
         return new Promise((resolve, reject) => {
             if (subscription) {
                 if (payload.member_id) subscription.member_id = payload.member_id;
@@ -60,15 +67,15 @@ class SubscriptionDal {
                 if (payload.end_date) subscription.end_date = payload.end_date;
 
 
-               subscription.save()
-                    .then((result:Subscription) => {
+                subscription.save()
+                    .then((result: Subscription) => {
                         if (result) {
                             resolve(result)
                         } else {
                             resolve(null)
                         }
                     })
-                    .catch((error:any) => {
+                    .catch((error: any) => {
                         reject(error)
                     });
             } else {
@@ -77,17 +84,17 @@ class SubscriptionDal {
         });
     }
 
-    remove = (query:any) => {
+    remove = (query: any) => {
         return new Promise((resolve, reject) => {
             Subscription.destroy({ where: query })
-                .then((result:any) => {
+                .then((result: any) => {
                     if (result) {
                         resolve("Deleted successfully!")
                     } else {
                         resolve(null)
                     }
                 })
-                .catch((error:any) => reject(error));
+                .catch((error: any) => reject(error));
         });
     }
 }

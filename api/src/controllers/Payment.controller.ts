@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import PaymentService from "../services/Payment.service";
 import { Payment, Error } from "../types";
-import { BadRequestError } from "../errors/errors";
+import { BadRequestError, ErrorMessages } from "../errors/errors";
 import { z } from 'zod'
 import { Role } from "../enums";
 
@@ -12,11 +12,9 @@ class PaymentController {
         const schema = z.object({
             amount: z.number().positive(),
             trx_ref: z.string(),
-            status: z.string(),
+            status: z.string().optional(),
             subscription_id: z.number(),
-            user_id: z.number(),
             member_id: z.number(),
-            password: z.string(),
         })
 
 
@@ -28,18 +26,19 @@ class PaymentController {
 
             const schemaResult = schema.safeParse(data)
             if (!schemaResult.success) {
-                response.status(404).json(schemaResult);
+                response.status(400).json({ status: "failed", message: ErrorMessages.badRequestError, error: ErrorMessages.badRequestError })
+            } else {
+                PaymentService.create(data)
+                    .then((result: Payment) => {
+                        response.status(200).json({ status: "success", data: result, message: "created successfully!" })
+                    })
+                    .catch((error: Error) => {
+                        response.status(500).json({ status: "failed", error })
+                    });
             }
-            PaymentService.create(data)
-                .then((result: Payment) => {
-                    response.status(200).json(result);
-                })
-                .catch((error: Error) => {
 
-                    response.status(401).json(error);
-                });
         } catch (error) {
-            let err = new BadRequestError(JSON.stringify(error));
+            let err = new BadRequestError(error);
             response.status(error.statusCode).json({ "error": err.errorCode, "message": err.message });
         }
 

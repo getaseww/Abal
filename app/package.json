@@ -17,6 +17,7 @@
     "apexcharts": "^3.41.0",
     "axios": "^1.7.2",
     "date-fns": "^3.6.0",
+    "dayjs": "^1.11.11",
     "headlessui": "^0.0.0",
     "i18next": "^23.11.5",
     "jsvectormap": "^1.5.3",

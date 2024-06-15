@@ -1,37 +1,42 @@
 import { Payment } from "../models/Payment";
+import { User } from "../models/User";
 
 class PaymentDal {
-    create(payload:any) {
+    create(payload: any) {
         return new Promise((resolve, reject) => {
             Payment.create(payload)
-                .then((result:Payment) => resolve(result))
-                .catch((error:any) => reject(error));
+                .then((result: Payment) => resolve(result))
+                .catch((error: any) => reject(error));
         });
     }
 
-    findAll = (query:any) => {
+    findAll = (query: any) => {
         return new Promise((resolve, reject) => {
             Payment.findAll({
                 where: query,
+                include: [
+                    { model: User, as: "payer" }
+                ]
                 // orderBy:[
                 //     {
                 //         createdAt:'asc'
                 //     }
                 // ]
             })
-                .then((result:Payment[]) => resolve(result))
-                .catch((error:any) => reject(error));
+                .then((result: Payment[]) => resolve(result))
+                .catch((error: any) => reject(error));
         })
     }
 
-    findOne = (query:any) => {
+    findOne = (query: any) => {
         return new Promise((resolve, reject) => {
             Payment.findOne({
                 where: query,
             })
-                .then((result:Payment) => {
-                    resolve(result)})
-                .catch((error:any) => {
+                .then((result: Payment) => {
+                    resolve(result)
+                })
+                .catch((error: any) => {
                     reject(error)
                 });
         });
@@ -51,22 +56,23 @@ class PaymentDal {
         });
     }
 
-    update = (payment:Payment, payload:any) => {
+    update = (payment: Payment, payload: any) => {
         return new Promise((resolve, reject) => {
             if (payment) {
                 if (payload.amount) payment.amount = payload.amount;
                 if (payload.status) payment.status = payload.status;
+                if (payload.date) payment.date = payload.date;
 
 
                 payment.save()
-                    .then((result:Payment) => {
+                    .then((result: Payment) => {
                         if (result) {
                             resolve(result)
                         } else {
                             resolve(null)
                         }
                     })
-                    .catch((error:any) => {
+                    .catch((error: any) => {
                         reject(error)
                     });
             } else {
@@ -75,17 +81,17 @@ class PaymentDal {
         });
     }
 
-    remove = (query:any) => {
+    remove = (query: any) => {
         return new Promise((resolve, reject) => {
             Payment.destroy({ where: query })
-                .then((result:any) => {
+                .then((result: any) => {
                     if (result) {
                         resolve("Deleted successfully!")
                     } else {
                         resolve(null)
                     }
                 })
-                .catch((error:any) => reject(error));
+                .catch((error: any) => reject(error));
         });
     }
 }

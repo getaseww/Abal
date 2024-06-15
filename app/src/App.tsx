@@ -14,6 +14,7 @@ const DefaultLayout = lazy(() => import('./layouts/DefaultLayout'));
 const MembershipPlan = lazy(() => import('./pages/MembershipPlan'));
 const Subscription = lazy(() => import('./pages/Subscription'));
 const Member = lazy(() => import('./pages/Member'));
+const Payment = lazy(() => import('./pages/Payment'));
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -49,6 +50,7 @@ function App() {
           <Route path="/dashboard/membership-plan" element={token != null && token != undefined ? <MembershipPlan /> : <Navigate to="/auth/login" replace={true} />} />
           <Route path="/dashboard/subscription" element={token != null && token != undefined ? <Subscription /> : <Navigate to="/auth/login" replace={true} />} />
           <Route path="/dashboard/member" element={token != null && token != undefined ? <Member /> : <Navigate to="/auth/login" replace={true} />} />
+          <Route path="/dashboard/payment" element={token != null && token != undefined ? <Payment /> : <Navigate to="/auth/login" replace={true} />} />
 
         </Route>
       </Routes>

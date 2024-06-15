@@ -20,6 +20,10 @@ export default function Sidebar({ isOpen, toggleSidebar }: { isOpen: boolean, to
         { title: 'Look Up', items: [{ name: 'Role', link: routes.ROLE }] },
     ];
 
+    const inventoryMenus = [
+        { title: 'Inventory', items: [{ name: 'Equipments', link: routes.ROLE }] },
+    ];
+
     return (
         <div className={`h-screen fixed inset-y-0 left-0 w-45 bg-white shadow-lg transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 lg:static lg:inset-auto lg:translate-x-0`}>
             <div className="p-6 flex items-center justify-between lg:hidden">
@@ -49,12 +53,9 @@ export default function Sidebar({ isOpen, toggleSidebar }: { isOpen: boolean, to
                 }
                 {
                     (user?.role == "Admin" || user?.role == "Owner")
-                    && <SidebarItem text="Payments" link={routes.MEMBER} />
+                    && <SidebarItem text="Payments" link={routes.PAYMENT} />
                 }
-                {
-                    (user?.role == "Admin" || user?.role == "Owner")
-                    && <SidebarItem text="Memebers" link={routes.MEMBER} />
-                }
+
 
                 {user?.role == "Admin" && menus.map((menu, index) => (
                     <Menu

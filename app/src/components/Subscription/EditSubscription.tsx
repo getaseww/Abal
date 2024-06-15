@@ -57,7 +57,7 @@ export default function EditSubscription({ record, refetch }: { record: Subscrip
 
     return (
         <div className=''>
-            <SidePanel is_title_row={true} isText={false} open={open} setOpen={setOpen} title={t('edit_subscription')} button_title={<><EditOutlined /></>}>
+            <SidePanel is_title_row={false} isText={true} open={open} setOpen={setOpen} title={t('edit_subscription')} button_title={<><EditOutlined /> {t('edit')}</>}>
                 <Form onFinish={submitData}
                     name="edit_subscription_form"
                     layout="vertical"
