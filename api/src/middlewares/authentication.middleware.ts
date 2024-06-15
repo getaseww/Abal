@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
 import { Request, Response } from "express";
-import {User} from '../models/User';
+import { User } from '../models/User';
 
 
 export const authentication = (req: Request, res: Response, next: Function) => {
@@ -51,6 +51,7 @@ export const response = (req: any, res: Response) => {
         last_name: user.last_name,
         phone_number: user.phone_number,
         id: user.id,
+        role: user.role.name
     });
 };
 
@@ -62,14 +63,14 @@ export const authenticateHeader = (
 ) => {
     const authentication_header = req.headers.authorization;
     const token = authentication_header && authentication_header.split(" ")[1];
-    if (token == null) return res.status(401).json({error:"Token not provided!"});
+    if (token == null) return res.status(401).json({ error: "Token not provided!" });
 
     jwt.verify(
         token,
         process.env.TOKEN_KEY,
-        (error, user:User) => {
+        (error, user: User) => {
             if (error) {
-                return res.status(403).json({error:"Invalid token!"});
+                return res.status(403).json({ error: "Invalid token!" });
             }
             req.user = user;
             next();

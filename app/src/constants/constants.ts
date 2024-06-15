@@ -3,8 +3,8 @@ export const MAIN_API_URL = import.meta.env.PROD ? "https://newcom.efoyplus.com/
 
 export const routes = {
     HOME: "/",
-    LOGIN: "/login",
-    DASHBOARD: "/dashboard",
+    LOGIN: "/auth/login",
+    DASHBOARD: "/",
     MEMBER: "/dashboard/member",
     MEMEBERSHIP_PLAN: "/dashboard/membership-plan",
     SUBSCRIPTION: "/dashboard/subscription",

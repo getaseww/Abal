@@ -3,9 +3,11 @@ import { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi'; // Importing icons from react-icons
 import { routes } from "../../constants/constants";
+import { userStore } from "../../store/userStore";
 
 export default function Sidebar({ isOpen, toggleSidebar }: { isOpen: boolean, toggleSidebar: any }) {
     const [expandedMenus, setExpandedMenus] = useState<any>({});
+    const user: any = JSON.parse(userStore((state: any) => state.user))
 
     const toggleMenu = (index: number) => {
         setExpandedMenus((prev: any) => ({
@@ -19,7 +21,7 @@ export default function Sidebar({ isOpen, toggleSidebar }: { isOpen: boolean, to
     ];
 
     return (
-        <div className={`h-screen-minus-20 fixed inset-y-0 left-0 w-50 bg-white shadow-lg transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 lg:static lg:inset-auto lg:translate-x-0`}>
+        <div className={`h-screen fixed inset-y-0 left-0 w-45 bg-white shadow-lg transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 lg:static lg:inset-auto lg:translate-x-0`}>
             <div className="p-6 flex items-center justify-between lg:hidden">
                 {/* <h1 className="text-2xl font-bold text-blue-600">Dashboard</h1> */}
                 <button onClick={toggleSidebar} className="p-2 text-gray-500 rounded-lg hover:bg-gray-200">
@@ -30,9 +32,31 @@ export default function Sidebar({ isOpen, toggleSidebar }: { isOpen: boolean, to
 
             <nav className="mt-6">
                 <SidebarItem text="Dashboard" link={routes.DASHBOARD} />
-                <SidebarItem text="Memebers" link={routes.MEMBER} />
+                {user.role == "Admin" &&
+                    <SidebarItem text="Users" link={routes.MEMBER} />
+                }
+                {
+                    user.role == "Owner"
+                    && <SidebarItem text="Memebers" link={routes.MEMBER} />
+                }
+                {
+                    user.role == "Admin"
+                    && <SidebarItem text="Membership Plans" link={routes.MEMEBERSHIP_PLAN} />
+                }
+                {
+                    (user.role == "Admin" || user.role == "Owner")
+                    && <SidebarItem text="Subscriptions" link={routes.MEMBER} />
+                }
+                {
+                    (user.role == "Admin" || user.role == "Owner")
+                    && <SidebarItem text="Payments" link={routes.MEMBER} />
+                }
+                {
+                    (user.role == "Admin" || user.role == "Owner")
+                    && <SidebarItem text="Memebers" link={routes.MEMBER} />
+                }
 
-                {menus.map((menu, index) => (
+                {user.role == "Admin" && menus.map((menu, index) => (
                     <Menu
                         key={index}
                         title={menu.title}

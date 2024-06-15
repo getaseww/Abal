@@ -1,6 +1,7 @@
 import { MembershipPlan } from '../models/MembershipPlan';
 import { Payment } from '../models/Payment';
 import { Profile } from '../models/Profile';
+import { Role } from '../models/Role';
 import { Subscription } from '../models/Subscription';
 import { User } from '../models/User';
 
@@ -42,6 +43,9 @@ class UserDal {
         return new Promise((resolve, reject) => {
             User.findOne({
                 where: query,
+                include: [
+                    Role
+                ]
             })
                 .then((result: User) => {
                     resolve(result)

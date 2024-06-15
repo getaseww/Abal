@@ -1,4 +1,5 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
+import { Role } from "./Role";
 
 export class User extends Model {
   public id!: number;
@@ -8,7 +9,7 @@ export class User extends Model {
   public password!: string;
   public role_id!: string;
   public user_id!: string;
-
+  public role!: Role
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }

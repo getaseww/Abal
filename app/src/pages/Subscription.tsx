@@ -3,18 +3,18 @@ import { userStore } from '../store/userStore'
 import { useQuery } from '@tanstack/react-query'
 import { retrieveData } from '../utils/utils'
 
-export default function Member() {
+export default function Subscription() {
     const token = userStore((state: any) => state.token)
     const header = {
         Authorization: `Bearer ${token}`,
     }
 
     const { data, isPending, error, refetch } = useQuery({
-        queryKey: ['main_page_members'],
-        queryFn: () => retrieveData(`member`, header),
+        queryKey: ['main_page_subscription'],
+        queryFn: () => retrieveData(`subscription`, header),
     })
     
   return (
-    <div>Member</div>
+    <div>Subscription</div>
   )
 }

@@ -11,6 +11,7 @@ import Login from './pages/Login';
 
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const DefaultLayout = lazy(() => import('./layouts/DefaultLayout'));
+const MembershipPlan = lazy(() => import('./pages/MembershipPlan'));
 
 
 function App() {
@@ -43,25 +44,9 @@ function App() {
         <Route path="/auth/login" element={token == null && token == undefined ? <Login /> : <Navigate to="/" replace={true} />} />
 
         <Route element={<DefaultLayout />}>
-          <Route path="/" element={token != null && token != undefined ? <Dashboard /> : <Navigate to="/auth/login" replace={true} />}>
+          <Route path="/" element={token != null && token != undefined ? <Dashboard /> : <Navigate to="/auth/login" replace={true} />} />
+          <Route path="/dashboard/membership-plan" element={token != null && token != undefined ? <MembershipPlan /> : <Navigate to="/auth/login" replace={true} />} />
 
-          </Route>
-
-          {/* <Route index element={<ECommerce />} />
-          {routes.map((routes, index) => {
-            const { path, component: Component } = routes;
-            return (
-              <Route
-                key={index}
-                path={path}
-                element={
-                  <Suspense fallback={<Loader />}>
-                    <Component />
-                  </Suspense>
-                }
-              />
-            );
-          })} */}
         </Route>
       </Routes>
     </>

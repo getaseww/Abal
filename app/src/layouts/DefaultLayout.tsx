@@ -1,9 +1,9 @@
 'use client'
 
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import Header from "../components/dashboard/Header";
-import Sidebar from "../components/dashboard/Sidebar";
 import { Outlet } from "react-router-dom";
+import Sidebar from "../components/dashboard/Sidebar";
 
 export default function DefaultLayout() {
     const [sidebarOpen, setSidebarOpen] = useState(false);

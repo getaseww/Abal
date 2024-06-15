@@ -17,7 +17,6 @@ const routes = (app: Application) => {
     app.use("/api/subscription",authenticateHeader, SubscriptionRoutes);
     app.use("/api/payment", authenticateHeader,PaymentRoutes);
     app.use("/api/profile", authenticateHeader,ProfileRoutes);
-
 }
 
 export default routes;
