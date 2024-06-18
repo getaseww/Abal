@@ -96,7 +96,7 @@ class ProfileController {
                 response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });
             })
         // } else {
-        // let error = Error.badRequestError(error?.details[0]?.message)
+    // let error = Error.badRequestError(error?.details[0]?.message)
         // res.status(error.status).json(error.message);
         // }
     }

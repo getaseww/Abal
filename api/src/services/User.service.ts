@@ -87,7 +87,6 @@ class UserService {
         return new Promise((resolve, reject) => {
             UserDal.findAll(query).then((result) => resolve(result))
                 .catch((error) => {
-                    console.log("error from service", error)
                     reject(new CustomError(error, 500, "Internal Server Error"))
                 })
         })

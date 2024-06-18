@@ -76,6 +76,7 @@ class SubscriptionController {
                 user_id: user.id
             }
         }
+        console.log("query id for admin",user,query)
         SubscriptionService.findAll(query)
             .then((result: Subscription[]) => {
                 response.status(200).json({ status: "success", data: result, message: "Subscription fetched successfully!" })

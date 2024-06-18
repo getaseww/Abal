@@ -146,8 +146,8 @@ const Package: React.FC = () => {
     const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
 
     return (
-        <>
-            <div>
+        <div className='w-full p-5'>
+        <div>
                 <div className='flex justify-between pb-5'>
                     <Search placeholder={t('package_search_placeholder')} onSearch={onSearch} onChange={(e)=>setQuery(e.target.value)} className='w-100 bg-white dark:bg-boxdark' />
                     <AddPackage refetch={refetch} />
@@ -155,7 +155,7 @@ const Package: React.FC = () => {
                 <CustomTable column={columns} data={data} handleChange={handleChange} />
                 
             </div>
-        </>
+        </div>
     );
 };
 

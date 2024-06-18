@@ -15,6 +15,9 @@ const MembershipPlan = lazy(() => import('./pages/MembershipPlan'));
 const Subscription = lazy(() => import('./pages/Subscription'));
 const Member = lazy(() => import('./pages/Member'));
 const Payment = lazy(() => import('./pages/Payment'));
+const SMSContent = lazy(() => import('./pages/SMS/Content'));
+const SMSPackage = lazy(() => import('./pages/SMS/Package'));
+const SMSSubscription = lazy(() => import('./pages/SMS/Subscription'));
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -51,6 +54,11 @@ function App() {
           <Route path="/dashboard/subscription" element={token != null && token != undefined ? <Subscription /> : <Navigate to="/auth/login" replace={true} />} />
           <Route path="/dashboard/member" element={token != null && token != undefined ? <Member /> : <Navigate to="/auth/login" replace={true} />} />
           <Route path="/dashboard/payment" element={token != null && token != undefined ? <Payment /> : <Navigate to="/auth/login" replace={true} />} />
+          {/* sms pages  */}
+
+          <Route path="/dashboard/sms/content" element={token != null && token != undefined ? <SMSContent /> : <Navigate to="/auth/login" replace={true} />} />
+          <Route path="/dashboard/sms/package" element={token != null && token != undefined ? <SMSPackage /> : <Navigate to="/auth/login" replace={true} />} />
+          <Route path="/dashboard/sms/subscription" element={token != null && token != undefined ? <SMSSubscription /> : <Navigate to="/auth/login" replace={true} />} />
 
         </Route>
       </Routes>

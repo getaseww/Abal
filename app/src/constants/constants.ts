@@ -12,9 +12,12 @@ export const routes = {
     SUBSCRIPTION: "/dashboard/subscription",
     ROLE: "/dashboard/role",
     // inventory
-    INVENTORY_EQUIPMENT: "/dashboard/inventory/equipment"
+    INVENTORY_EQUIPMENT: "/dashboard/inventory/equipment",
 
     // sms
+    SMS_PACKAGE: "/dashboard/sms/package",
+    SMS_SUBSCRIPTION: "/dashboard/sms/subscription",
+    SMS_CONTENT: "/dashboard/sms/content"
 
 
 }

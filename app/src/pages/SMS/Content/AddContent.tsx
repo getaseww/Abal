@@ -32,64 +32,21 @@ const AddContent: React.FC<AddContentPopType> = ({ refetch }) => {
         Authorization: `Bearer ${token}`,
     }
 
-    const { data: leaseData, refetch: refetchUserData } = useQuery({
-        queryKey: ['lease-data-sms', 'sms'],
-        queryFn: () => retrieveData(`lease?name=${query}`, header),
-    })
 
-    const { data: shareholderData, refetch: refetchShareholdersData } = useQuery({
-        queryKey: ['shareholders-data-sms', 'sms'],
-        queryFn: () => retrieveData(`share-holder?name=${query}`, header),
-    })
-    const leaseExtracted = leaseData && leaseData.map((tenantItem: any) => {
-        const id = tenantItem.tenant.id;
-        const full_name = tenantItem.tenant.full_name;
-        const phone_number = tenantItem.tenant.phone_number;
-
-        // Return an object with the required fields
-        return { id, full_name, phone_number };
-    });
-
-    const shareExtracted = shareholderData && shareholderData.map((shItem: any) => {
-        const id = shItem.holder.id;
-        const full_name = shItem.holder.full_name;
-        const phone_number = shItem.holder.phone_number;
-
-        // Return an object with the required fields
-        return { id, full_name, phone_number };
-    });
     const { data: balanceDatas } = useQuery({
         queryKey: ['sms_balance'],
         queryFn: () => retrieveData("sms/balance", header),
     })
 
-    console.log("sms balance data", balanceDatas)
+    const { data: memberData, isPending, error } = useQuery({
+        queryKey: ['sms_content_members'],
+        queryFn: () => retrieveData(`user`, header),
+    })
+
 
     var activeBalance: number = 0;
 
-    const [userType, setUserType] = useState<string | null>()
 
-    const [filteredData, setFilteredData] = useState<any>();
-    console.log("user data " + JSON.stringify(shareExtracted))
-    useEffect(() => {
-        if (leaseExtracted && shareExtracted) {
-            if (userType === Role.MEMBER)
-                setFilteredData(shareExtracted);
-            else {
-                const dataMerged = (leaseExtracted || []).concat(shareExtracted || []);
-
-                const uniqueData = new Set<string>();
-
-                dataMerged.forEach((item: any) => {
-                    uniqueData.add(JSON.stringify(item));
-                });
-
-                const uniqueExtractedData = Array.from(uniqueData).map(item => JSON.parse(item));
-
-                setFilteredData(uniqueExtractedData);
-            }
-        }
-    }, [userType]);
 
 
     if (balanceDatas != null && balanceDatas != undefined && balanceDatas.length > 0)
@@ -158,8 +115,8 @@ const AddContent: React.FC<AddContentPopType> = ({ refetch }) => {
     const columns: ColumnsType<UserType> = [
         {
             title: `${t('full_name')}`,
-            dataIndex: 'full_name',
             key: 'full_name',
+            render:(value,record)=><>{record.first_name} {record.last_name}</>
         },
         {
             title: `${t('phone_number')}`,
@@ -198,7 +155,7 @@ const AddContent: React.FC<AddContentPopType> = ({ refetch }) => {
         setPhoneNumbers([])
         console.log("select keys " + JSON.stringify(selectedRowKeys))
         selectedRowKeys.map((key) => {
-            const res = filteredData?.filter((item: any, index: number) => key == index)
+            const res = memberData?.filter((item: any, index: number) => key == index)
             console.log("response" + JSON.stringify(res))
             // if (!phoneNumbers.includes(res[0]?.user?.phone_number)) {
             setPhoneNumbers((prev) => [...prev, res[0]?.phone_number])
@@ -209,7 +166,7 @@ const AddContent: React.FC<AddContentPopType> = ({ refetch }) => {
     console.log("phone ", phoneNumbers)
     const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
     useEffect(() => {
-        refetchUserData();
+        // refetchUserData();
     }, [query])
 
     return (
@@ -261,23 +218,6 @@ const AddContent: React.FC<AddContentPopType> = ({ refetch }) => {
 
                         <div className='h-200 w-full overflow-auto '>
                             <div className='flex '>
-
-                                <div className='flex-grow mr-5'>
-                                    <Form.Item
-                                        name="type"
-                                        className='flex-grow'
-                                    >
-                                        <Select onChange={(e) => setUserType(e)}
-                                            className='w-75'
-                                        >
-                                            <Select.Option
-                                                key="All" value="All" >{t(`all`)}</Select.Option>
-                                           <Select.Option
-                                                key="share_holders" value={Role.MEMBER} >{t(`share_holder`)}</Select.Option>
-
-                                        </Select>
-                                    </Form.Item>
-                                </div>
                                 <div className='flex-grow'>
                                     <Search
                                         placeholder={t('filter_using_names_phonenumber')}
@@ -289,7 +229,7 @@ const AddContent: React.FC<AddContentPopType> = ({ refetch }) => {
                             <CustomTable
                                 rowSelection={rowSelection}
                                 column={columns}
-                                data={filteredData}
+                                data={memberData}
                                 handleChange={null}
                                 pagination={false}
                             />

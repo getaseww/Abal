@@ -20,6 +20,7 @@ const AddSubscription: React.FC<AddSubscriptionPropType> = ({ refetch }) => {
     const [openMessage, setOpenMessage] = useState(false);
     const [unapproved, setUnapproved] = useState(false);
     const token = userStore((state: any) => state.token);
+    const user: any = JSON.parse(userStore((state: any) => state.user))
 
     const [query, setQuery] = useState();
 
@@ -34,15 +35,14 @@ const AddSubscription: React.FC<AddSubscriptionPropType> = ({ refetch }) => {
         refetchOnWindowFocus: true,
     })
 
-    const user = userStore((state: any) => state.user);
 
     const { data: subscriptionData } = useQuery({
         queryKey: ['smssubscription'],
         queryFn: () => retrieveData(`sms/subscription?name=${query}`, header),
     })
     useEffect(() => {
-        if (JSON.parse(user)?.role != Role.ADMIN && open == false && subscriptionData?.filter((item: SubscriptionType) => item.is_approved == false)?.length > 0) {
-            setOpenMessage(true)
+        if (user?.role != Role.ADMIN && open == false && subscriptionData?.filter((item: SubscriptionType) => item.is_approved == false)?.length > 0) {
+            setOpenMessage(true);
             setUnapproved(true);
         }
     }, [subscriptionData])

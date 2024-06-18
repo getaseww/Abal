@@ -1,7 +1,7 @@
 import async from 'async'
 import { Notification } from '../models/Notification';
 import { NotificationDal } from '../dals';
-import { ErrorMessages } from '../../../constants/constant';
+import { ErrorMessages } from '../../../errors/errors';
 
 class NotificationService {
     create(payload: Notification) {

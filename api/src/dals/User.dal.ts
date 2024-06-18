@@ -20,20 +20,20 @@ class UserDal {
 
             let user_query = {};
             if (user) { user_query = user }
+            console.log("find all")
             User.findAll({
-                where: query,
+                where: other,
                 attributes: { exclude: ['password'] },
                 include: [
-                    {
-                        model: User, where: user_query, required: true, attributes: { exclude: ['password'] },
-                    },
+                    // {
+                    //     model: User, where: user_query, required: true, attributes: { exclude: ['password'] },
+                    // },
                     { model: Payment, as: "member_payments" },
                     Payment,
                     { model: Subscription, as: "member_subscriptions" },
                     Subscription,
                     MembershipPlan,
                     Profile
-
                 ]
                 // orderBy:[
                 //     {
@@ -70,6 +70,7 @@ class UserDal {
         return new Promise((resolve, reject) => {
             User.findOne({
                 where: { id },
+                include: [Role]
             })
                 .then((result: User) => {
                     resolve(result)

@@ -20,6 +20,7 @@ import { Role } from '../../../enums/generalEnums.ts';
 const Subscription: React.FC = () => {
 
     const token = userStore((state: any) => state.token)
+    const user: any = JSON.parse(userStore((state: any) => state.user))
 
     const [query, setQuery] = useState<any>()
     const header = {
@@ -31,12 +32,7 @@ const Subscription: React.FC = () => {
         queryFn: () => retrieveData(`sms/subscription?name=${query}`, header),
     })
 
-    const { data: roleData } = useQuery({
-        queryKey: ['role_subscription_sms'],
-        queryFn: () => retrieveData(`role/${JSON.parse(user)?.role_id}`, header),
-    })
-
-
+ 
     const [filteredInfo, setFilteredInfo] = useState<Record<string, FilterValue | null>>({});
     const [sortedInfo, setSortedInfo] = useState<SorterResult<SubscriptionType>>({});
 
@@ -76,10 +72,6 @@ const Subscription: React.FC = () => {
     const handleApprove = (data: any) => {
         updateMutation.mutate(data);
     }
-    const user = userStore((state: any) => state.user);
-
-
-
 
 
     const columns: ColumnsType<SubscriptionType> = [
@@ -134,7 +126,7 @@ const Subscription: React.FC = () => {
                     content={
                         <div className='flex flex-col'>
                             {/*     <EditSubscription data={record} refetch={refetch} /> */}
-                            {JSON.parse(JSON.stringify(roleData))?.name == Role.ADMIN && !record.is_approved && <Popconfirm
+                            {user.role == Role.ADMIN && !record.is_approved && <Popconfirm
                                 title={t('approve_sms_subscription')}
                                 description={t('confirm_approve')}
                                 onConfirm={() => handleApprove(record)}
@@ -180,7 +172,7 @@ const Subscription: React.FC = () => {
     console.log("package data", data);
 
     return (
-        <>
+        <div className='w-full p-5'>
             <div>
                 <div className='flex justify-between pb-5'>
                     <Search placeholder={t('package_search_placeholder')} onSearch={onSearch} onChange={(e) => setQuery(e.target.value)} className='w-100 bg-white dark:bg-boxdark' />
@@ -188,7 +180,7 @@ const Subscription: React.FC = () => {
                 </div>
                 <CustomTable column={columns} data={data} handleChange={handleChange} />
             </div>
-        </>
+        </div>
     );
 };
 

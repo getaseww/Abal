@@ -1,7 +1,7 @@
 // import UserService from '../services/user.service';
 import bcrypt from 'bcrypt';
 import passportJwt from 'passport-jwt';
-import {Strategy} from 'passport-local';
+import { Strategy } from 'passport-local';
 import { User } from '../types';
 import env from 'dotenv'
 import UserService from '../services/User.service';
@@ -15,14 +15,15 @@ const security = {
     token_expiration: 60 * 60 * 24 * 30,
 };
 
+
 export const localStrategy = new Strategy(
     {
         usernameField: "phone_number",
         passwordField: "password",
     },
-    (phone_number:string, password:string, done:Function) => {
+    (phone_number: string, password: string, done: Function) => {
         UserService.findOne({ phone_number })
-            .then((user:any) => {
+            .then((user: any) => {
                 if (!user) {
                     return done(null, false, {
                         message: "Login Failed: Invalid Phone Number or password!",
@@ -55,7 +56,7 @@ export const jwtStrategy = new passportJwt.Strategy(
     {
         jwtFromRequest: passportJwt.ExtractJwt.fromAuthHeaderAsBearerToken(),
         secretOrKey: process.env.TOKEN_KEY,
-        ignoreExpiration:true,
+        ignoreExpiration: true,
     },
     (jwtPayload, next) => {
         UserService.findOne({ id: jwtPayload.id })

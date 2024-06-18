@@ -12,7 +12,8 @@ export class User extends Model {
   public role_id!: string;
   public user_id!: string;
   public role!: Role;
-  public profile!:Profile;
+  public profile!: Profile;
+
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -37,6 +38,7 @@ export default (sequelize: Sequelize) => {
       phone_number: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
       },
       password: {
         type: DataTypes.STRING,
@@ -57,18 +59,18 @@ export default (sequelize: Sequelize) => {
       tableName: "users",
     }
 
-    
+
   );
   User.beforeCreate((user, options) => {
     if (user.password) {
-        return hashPassword(user.password)
-            .then((hashed: any) => {
-                user.password = hashed;
-            })
-            .catch((error: any) => {
-                throw new error;
-            });
+      return hashPassword(user.password)
+        .then((hashed: any) => {
+          user.password = hashed;
+        })
+        .catch((error: any) => {
+          throw new error;
+        });
     }
-});
+  });
 
 };

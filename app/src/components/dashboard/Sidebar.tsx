@@ -4,6 +4,8 @@ import { IoMdClose } from "react-icons/io";
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi'; // Importing icons from react-icons
 import { routes } from "../../constants/constants";
 import { userStore } from "../../store/userStore";
+import { Role } from "../../enums/generalEnums";
+import { MenuItemType, MenuType } from "../../@types/types";
 
 export default function Sidebar({ isOpen, toggleSidebar }: { isOpen: boolean, toggleSidebar: any }) {
     const [expandedMenus, setExpandedMenus] = useState<any>({});
@@ -16,16 +18,29 @@ export default function Sidebar({ isOpen, toggleSidebar }: { isOpen: boolean, to
         }));
     };
 
-    const menus = [
-        { title: 'Look Up', items: [{ name: 'Role', link: routes.ROLE }] },
+    const menus: MenuType[] = [
+        { title: 'Look Up', access: [Role.ADMIN], items: [{ name: 'Role', link: routes.ROLE, access: [Role.ADMIN] }] },
     ];
 
     const inventoryMenus = [
         { title: 'Inventory', items: [{ name: 'Equipments', link: routes.ROLE }] },
     ];
 
+    const smsMenus: MenuType[] = [
+        {
+            title: "SMS",
+            access: [Role.ADMIN, Role.OWNER],
+            items: [
+                { name: "Package", link: routes.SMS_PACKAGE, access: [Role.ADMIN] },
+                { name: "Subscription", link: routes.SMS_SUBSCRIPTION, access: [Role.ADMIN, Role.OWNER] },
+                { name: "Content", link: routes.SMS_CONTENT, access: [Role.ADMIN, Role.OWNER] },
+            ]
+        }
+    ]
+
+
     return (
-        <div className={`h-screen fixed inset-y-0 left-0 w-45 bg-white shadow-lg transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 lg:static lg:inset-auto lg:translate-x-0`}>
+        <div className={`h-screen fixed inset-y-0 left-0 w-50 bg-white shadow-lg transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 lg:static lg:inset-auto lg:translate-x-0`}>
             <div className="p-6 flex items-center justify-between lg:hidden">
                 {/* <h1 className="text-2xl font-bold text-blue-600">Dashboard</h1> */}
                 <button onClick={toggleSidebar} className="p-2 text-gray-500 rounded-lg hover:bg-gray-200">
@@ -55,7 +70,15 @@ export default function Sidebar({ isOpen, toggleSidebar }: { isOpen: boolean, to
                     (user?.role == "Admin" || user?.role == "Owner")
                     && <SidebarItem text="Payments" link={routes.PAYMENT} />
                 }
-
+                {smsMenus[0].access.find((item) => item == user?.role) && smsMenus.map((menu, index) => (
+                    <Menu
+                        key={index}
+                        title={menu.title}
+                        items={menu.items}
+                        isExpanded={!!expandedMenus[index]}
+                        toggleMenu={() => toggleMenu(index)}
+                    />
+                ))}
 
                 {user?.role == "Admin" && menus.map((menu, index) => (
                     <Menu
@@ -72,7 +95,10 @@ export default function Sidebar({ isOpen, toggleSidebar }: { isOpen: boolean, to
     );
 };
 
-const Menu = ({ title, items, isExpanded, toggleMenu }: { title: string, items: any, isExpanded: boolean, toggleMenu: any }) => {
+const Menu = ({ title, items, isExpanded, toggleMenu }: { title: string, items: MenuItemType[], isExpanded: boolean, toggleMenu: any }) => {
+
+    const user: any = JSON.parse(userStore((state: any) => state.user))
+
     return (
         <div className="bg-white   overflow-hidden mb-4">
             <div
@@ -88,11 +114,15 @@ const Menu = ({ title, items, isExpanded, toggleMenu }: { title: string, items: 
                 <div className="px-4 py-1 bg-gray-100">
                     <ul>
                         {items.map((item: any, index: number) => (
-                            <a href={item.link}>
-                                <li key={index} className="py-2">
-                                    {item.name}
-                                </li>
-                            </a>
+                            <>
+                                {
+                                    item.access?.find((role:any) => role == user?.role) && <a href={item.link}>
+                                        <li key={index} className="py-2">
+                                            {item.name}
+                                        </li>
+                                    </a>
+                                }
+                            </>
                         ))}
                     </ul>
                 </div>

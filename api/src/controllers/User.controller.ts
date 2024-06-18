@@ -74,7 +74,7 @@ class UserController {
                         response.status(200).json({ status: "success", data: result, message: "fetched successfully!" })
                     })
                     .catch((error: Error) => {
-                        console.log("user controller",error)
+                        console.log("user controller", error)
                         response.status(500).json({ status: "failed", message: "Failed to create data!", error });
                     });
             }
@@ -114,6 +114,7 @@ class UserController {
     static findAll(request: Request, response: Response) {
         let query = {}
         const user: any = request.user;
+        console.log("user from findall", user)
         if (user?.role == Role.OWNER) {
             query = { ...query, user_id: user.id }
         }
@@ -122,6 +123,7 @@ class UserController {
         if (request.query.name && request.query.name != "undefined")
             query = { ...query, name: request.query.name }
 
+        console.log("find all query", query)
         UserService.findAll(query)
             .then((result: any) => {
                 // const data = result.map(({ password, ...rest }) => rest);

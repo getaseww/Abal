@@ -16,11 +16,8 @@ export const authentication = (req: Request, res: Response, next: Function) => {
         });
     }
 
-    console.log("above strategy")
 
     passport.authenticate('local', { session: false }, (error: any, user: any, info: any) => {
-        console.log("error log")
-        console.log("ERROR >>>  ", error);
         if (error) {
             return res.status(500).send(error);
         } else if (!user) {
@@ -29,7 +26,6 @@ export const authentication = (req: Request, res: Response, next: Function) => {
                 .json({ message: "Login Failed: Invalid Phone Number or password!" });
         } else {
             req.logIn(user, { session: false }, (error) => {
-                console.log("ER >>>  ", error);
                 if (error) {
                     return res
                         .status(401)
@@ -114,6 +110,9 @@ export const generateToken = (req: any, res: Response, next: Function) => {
         {
             id: user.id,
             phone_number: user.phone_number,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            role: user.role.name
         },
         process.env.TOKEN_KEY
     );

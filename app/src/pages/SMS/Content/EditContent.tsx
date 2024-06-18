@@ -32,60 +32,16 @@ const EditContent: React.FC<EditContentPopType> = ({ data, refetch }) => {
         Authorization: `Bearer ${token}`,
     }
 
-    const { data: leaseData, refetch: refetchUserData } = useQuery({
-        queryKey: ['lease-data-sms', 'sms'],
-        queryFn: () => retrieveData(`lease?name=${query}`, header),
+
+    const { data: memberData, isPending, error } = useQuery({
+        queryKey: ['sms_content_edit_members'],
+        queryFn: () => retrieveData(`user`, header),
     })
 
-    const { data: shareholderData, refetch: refetchShareholdersData } = useQuery({
-        queryKey: ['shareholders-data-sms', 'sms'],
-        queryFn: () => retrieveData(`share-holder?name=${query}`, header),
-    })
-    const leaseExtracted = leaseData && leaseData.map((tenantItem: any) => {
-        const id = tenantItem.tenant.id;
-        const full_name = tenantItem.tenant.full_name;
-        const phone_number = tenantItem.tenant.phone_number;
-
-        // Return an object with the required fields
-        return { id, full_name, phone_number };
-    });
-
-    const shareExtracted = shareholderData && shareholderData.map((shItem: any) => {
-        const id = shItem.holder.id;
-        const full_name = shItem.holder.full_name;
-        const phone_number = shItem.holder.phone_number;
-
-        // Return an object with the required fields
-        return { id, full_name, phone_number };
-    });
     const { data: balanceDatas } = useQuery({
         queryKey: ['sms_balance'],
         queryFn: () => retrieveData("sms/balance?user_id=" + data.user_id, header),
     })
-
-    const [filteredData, setFilteredData] = useState<any>();
-    console.log("user data " + JSON.stringify(shareExtracted))
-    useEffect(() => {
-        if (leaseExtracted && shareExtracted) {
-            if (userType === Role.MEMBER)
-                setFilteredData(leaseExtracted);
-            else if (userType === Role.MEMBER)
-                setFilteredData(shareExtracted);
-            else {
-                const dataMerged = (leaseExtracted || []).concat(shareExtracted || []);
-
-                const uniqueData = new Set<string>();
-
-                dataMerged.forEach((item: any) => {
-                    uniqueData.add(JSON.stringify(item));
-                });
-
-                const uniqueExtractedData = Array.from(uniqueData).map(item => JSON.parse(item));
-
-                setFilteredData(uniqueExtractedData);
-            }
-        }
-    }, [userType]);
 
     var activeBalance: number = 0;
     if (balanceDatas != null && balanceDatas != undefined && balanceDatas.length > 0)
@@ -119,7 +75,6 @@ const EditContent: React.FC<EditContentPopType> = ({ data, refetch }) => {
         }
     );
 
-    console.log("lease data " + JSON.stringify(leaseExtracted))
     const approveData = (value: any) => {
         let count_sms;
         if (checkUnicode(value.body)) {
@@ -143,7 +98,6 @@ const EditContent: React.FC<EditContentPopType> = ({ data, refetch }) => {
             status: value.status,
             resident_type: String(value.resident_type)
         }
-        console.log(data.phone_numbers)
         approveMutation.mutate(valueData);
     };
 
@@ -299,8 +253,7 @@ const EditContent: React.FC<EditContentPopType> = ({ data, refetch }) => {
                                 </Form.Item>
 
 
-                                <CustomTable column={columns} data={(filteredData) && filteredData?.filter((i: any) => data.phone_numbers?.includes(i?.phone_number))} handleChange={null} pagination={false} />
-
+                                <CustomTable column={columns} data={(memberData) && memberData?.filter((i: any) => data.phone_numbers?.includes(i?.phone_number))} handleChange={null} pagination={false} />
 
                             </Col>
                         </Row>
