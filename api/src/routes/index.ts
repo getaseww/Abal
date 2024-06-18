@@ -9,9 +9,10 @@ import ProfileRoutes from './Profile.routes';
 
 import { authenticateHeader } from "../middlewares/authentication.middleware";
 import { SMSRoutes } from "../modules/sms/routes";
-
+import { InventoryRoutes } from "../modules/Inventory/routes";
 const routes = (app: Application) => {
-    SMSRoutes(app)
+    SMSRoutes(app);
+    InventoryRoutes(app);
     app.use("/api/user", UserRoutes);
     app.use("/api/role", RoleRoutes);
     app.use("/api/membership-plan", authenticateHeader, MembershipPlanRoutes);

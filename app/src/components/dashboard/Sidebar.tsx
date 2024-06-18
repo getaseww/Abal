@@ -4,7 +4,7 @@ import { IoMdClose } from "react-icons/io";
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi'; // Importing icons from react-icons
 import { routes } from "../../constants/constants";
 import { userStore } from "../../store/userStore";
-import { Role } from "../../enums/generalEnums";
+import { Role } from "../../enums/enums";
 import { MenuItemType, MenuType } from "../../@types/types";
 
 export default function Sidebar({ isOpen, toggleSidebar }: { isOpen: boolean, toggleSidebar: any }) {
@@ -19,14 +19,14 @@ export default function Sidebar({ isOpen, toggleSidebar }: { isOpen: boolean, to
     };
 
     const menus: MenuType[] = [
-        { title: 'Look Up', access: [Role.ADMIN], items: [{ name: 'Role', link: routes.ROLE, access: [Role.ADMIN] }] },
-    ];
-
-    const inventoryMenus = [
-        { title: 'Inventory', items: [{ name: 'Equipments', link: routes.ROLE }] },
-    ];
-
-    const smsMenus: MenuType[] = [
+        {
+            title: 'Inventory',
+            access: [Role.ADMIN, Role.OWNER],
+            items: [
+                { name: 'Locations', link: routes.INVENTORY_LOCATION, access: [Role.OWNER, Role.ADMIN] },
+                { name: 'Equipments', link: routes.INVENTORY_EQUIPMENT, access: [Role.OWNER, Role.ADMIN] }
+            ]
+        },
         {
             title: "SMS",
             access: [Role.ADMIN, Role.OWNER],
@@ -35,8 +35,17 @@ export default function Sidebar({ isOpen, toggleSidebar }: { isOpen: boolean, to
                 { name: "Subscription", link: routes.SMS_SUBSCRIPTION, access: [Role.ADMIN, Role.OWNER] },
                 { name: "Content", link: routes.SMS_CONTENT, access: [Role.ADMIN, Role.OWNER] },
             ]
-        }
-    ]
+        },
+        {
+            title: 'Look Up',
+            access: [Role.ADMIN],
+            items: [
+                { name: 'Role', link: routes.ROLE, access: [Role.ADMIN] },
+                { name: 'Equipment Category', link: routes.INVENTORY_EQUIPMENT_CATEGORY, access: [Role.ADMIN] }
+            ]
+        },
+    ];
+
 
 
     return (
@@ -55,39 +64,33 @@ export default function Sidebar({ isOpen, toggleSidebar }: { isOpen: boolean, to
                     <SidebarItem text="Users" link={routes.MEMBER} />
                 }
                 {
-                    user?.role == "Owner"
+                    user?.role == Role.OWNER
                     && <SidebarItem text="Memebers" link={routes.MEMBER} />
                 }
                 {
-                    user?.role == "Admin"
+                    user?.role == Role.OWNER
                     && <SidebarItem text="Membership Plans" link={routes.MEMEBERSHIP_PLAN} />
                 }
                 {
-                    (user?.role == "Admin" || user?.role == "Owner")
+                    (user?.role == Role.ADMIN || user?.role == Role.OWNER)
                     && <SidebarItem text="Subscriptions" link={routes.SUBSCRIPTION} />
                 }
                 {
-                    (user?.role == "Admin" || user?.role == "Owner")
+                    (user?.role == Role.ADMIN || user?.role == Role.OWNER)
                     && <SidebarItem text="Payments" link={routes.PAYMENT} />
                 }
-                {smsMenus[0].access.find((item) => item == user?.role) && smsMenus.map((menu, index) => (
-                    <Menu
-                        key={index}
-                        title={menu.title}
-                        items={menu.items}
-                        isExpanded={!!expandedMenus[index]}
-                        toggleMenu={() => toggleMenu(index)}
-                    />
-                ))}
 
-                {user?.role == "Admin" && menus.map((menu, index) => (
-                    <Menu
-                        key={index}
-                        title={menu.title}
-                        items={menu.items}
-                        isExpanded={!!expandedMenus[index]}
-                        toggleMenu={() => toggleMenu(index)}
-                    />
+
+                {menus.map((menu, index) => (
+                    <>{
+                        menu.access.find((role) => role == user?.role) && <Menu
+                            key={index}
+                            title={menu.title}
+                            items={menu.items}
+                            isExpanded={!!expandedMenus[index]}
+                            toggleMenu={() => toggleMenu(index)}
+                        />
+                    }</>
                 ))}
             </nav>
 
@@ -116,7 +119,7 @@ const Menu = ({ title, items, isExpanded, toggleMenu }: { title: string, items: 
                         {items.map((item: any, index: number) => (
                             <>
                                 {
-                                    item.access?.find((role:any) => role == user?.role) && <a href={item.link}>
+                                    item.access?.find((role: any) => role == user?.role) && <a href={item.link}>
                                         <li key={index} className="py-2">
                                             {item.name}
                                         </li>

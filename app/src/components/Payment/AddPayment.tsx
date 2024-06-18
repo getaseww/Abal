@@ -83,7 +83,7 @@ export default function AddPayment({ refetch }: { refetch: Function }) {
                     onFinish={submitData}
                     name="add_payment_form"
                     layout="vertical" form={form}
-                    initialValues={{ date:dayjs() }}
+                    initialValues={{ date: dayjs() }}
                 >
 
                     <Form.Item label={t('member')} name="member_id"
@@ -102,7 +102,7 @@ export default function AddPayment({ refetch }: { refetch: Function }) {
                             { required: true, message: t('please_select_date') }
                         ]}
                     >
-                        <DatePicker.MonthPicker />
+                        <DatePicker.MonthPicker className='w-full' />
                     </Form.Item>
                     <Form.Item label={t('subscribed_membership_plan')} name="subscription_id"
                         rules={[

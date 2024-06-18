@@ -2,7 +2,7 @@ import axios from 'axios'
 import { MAIN_API_URL } from '../constants/constants';
 import { SelectProps } from 'antd';
 import { t } from 'i18next';
-import { PenalityOccurrence, PenalityRateType } from '../enums/generalEnums';
+import { PenalityOccurrence, PenalityRateType } from '../enums/enums';
 
 export const monthFormat = 'YYYY/MM';
 

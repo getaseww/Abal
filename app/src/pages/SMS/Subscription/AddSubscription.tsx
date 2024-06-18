@@ -10,7 +10,7 @@ import { AddSubscriptionPropType, SubscriptionType } from './type.ts';
 import { userStore } from '../../../store/userStore.ts';
 import { t } from 'i18next';
 import { PackageType } from '../Package/type.ts';
-import { Role } from '../../../enums/generalEnums.ts';
+import { Role } from '../../../enums/enums.ts';
 
 
 const AddSubscription: React.FC<AddSubscriptionPropType> = ({ refetch }) => {

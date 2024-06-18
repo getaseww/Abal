@@ -65,3 +65,21 @@ export const enum SMSSTATUS {
     APPPROVED = "Approved",
     REJECTED = "Rejected"
 }
+
+
+
+// Inventory
+
+export enum EquipmentStatus {
+    AVAILABLE = "Available",
+    INUSE = "In Use",
+    MAINTENANCE = "Maintenance",
+    RETIRED = "Retired"
+}
+
+export enum EquipmentCondition {
+    NEW = "New",
+    GOOD = "Good",
+    FAIR = "Fair",
+    POOR = "Poor"
+}

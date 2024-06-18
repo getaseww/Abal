@@ -969,5 +969,16 @@
     "edit_member": "edit_member",
     "view": "View",
     "payment_date": "payment_date",
-    "please_select_date": "please_select_date"
+    "please_select_date": "please_select_date",
+    "equipment": "equipment",
+    "empty_name": "empty_name",
+    "empty_category": "empty_category",
+    "brand": "Brand",
+    "model": "Model",
+    "serial_number":"serial_number",
+    "location":"location",
+    "edit_equipment":"edit_equipment",
+    "equipment_category":"equipment_category",
+    "edit_equipment_category":"edit_equipment_category",
+    "view_equipment_category":"view_equipment_category"
 }

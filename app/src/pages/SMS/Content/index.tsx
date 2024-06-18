@@ -12,7 +12,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import toast from 'react-hot-toast';
 import { deleteData, retrieveData } from '../../../utils/utils.ts';
-import { Role, SMSSTATUS } from '../../../enums/generalEnums.ts';
+import { Role, SMSSTATUS } from '../../../enums/enums.ts';
 
 
 

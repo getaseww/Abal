@@ -1,40 +1,40 @@
-import React, { useState } from 'react'
-import { userStore } from '../store/userStore'
+import { useState } from 'react'
+import { userStore } from '../../store/userStore'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { deleteData, retrieveData } from '../utils/utils'
+import { deleteData, retrieveData } from '../../utils/utils'
 import { ColumnsType, FilterValue, SorterResult } from 'antd/es/table/interface'
 import { Button, Divider, Popconfirm, Popover, TableProps } from 'antd'
 import toast from 'react-hot-toast'
 import { t } from 'i18next'
 import { format } from 'date-fns'
-import EditMember from '../components/Member/EditMember'
-import ViewMember from '../components/Member/ViewMember'
-import AddMember from '../components/Member/AddMember'
-import CustomTable from '../components/Table/CustomTable'
+import CustomTable from '../../components/Table/CustomTable'
 import { DeleteOutlined } from '@ant-design/icons'
-import { RoleType } from '../@types/Role'
+import { EquipmentCategoryType } from '../../@types/types'
+import EditEquipmentCategory from '../../components/Inventory/EquipmentCategory/EditEquipmentCategory'
+import ViewEquipmentCategory from '../../components/Inventory/EquipmentCategory/ViewEquipmentCategory'
+import AddEquipmentCategory from '../../components/Inventory/EquipmentCategory/AddEquipmentCategory'
 
-export default function Role() {
+export default function EquipmentCategory() {
     const token = userStore((state: any) => state.token)
     const header = {
         Authorization: `Bearer ${token}`,
     }
 
     const { data, isPending, error, refetch } = useQuery({
-        queryKey: ['main_page_role'],
-        queryFn: () => retrieveData(`role`, header),
+        queryKey: ['main_page_equipment_category'],
+        queryFn: () => retrieveData(`inventory/equipment-category`, header),
     })
 
     const [filteredInfo, setFilteredInfo] = useState<Record<string, FilterValue | null>>({});
-    const [sortedInfo, setSortedInfo] = useState<SorterResult<RoleType>>({});
-    const handleChange: TableProps<RoleType>['onChange'] = (pagination, filters, sorter) => {
+    const [sortedInfo, setSortedInfo] = useState<SorterResult<EquipmentCategoryType>>({});
+    const handleChange: TableProps<EquipmentCategoryType>['onChange'] = (pagination, filters, sorter) => {
         setFilteredInfo(filters);
-        setSortedInfo(sorter as SorterResult<RoleType>);
+        setSortedInfo(sorter as SorterResult<EquipmentCategoryType>);
     };
 
 
     const deleteMutation = useMutation({
-        mutationFn: (id: number) => deleteData(`role/${id}`, header),
+        mutationFn: (id: number) => deleteData(`inventory/equipment-category/${id}`, header),
         onSuccess: () => {
             toast.success(t('deleted_successfully'))
             refetch()
@@ -51,7 +51,7 @@ export default function Role() {
 
 
 
-    const columns: ColumnsType<RoleType> = [
+    const columns: ColumnsType<EquipmentCategoryType> = [
         {
             title: `${t('no')}`,
             key: 'index',
@@ -84,8 +84,8 @@ export default function Role() {
                     key={val}
                     content={
                         <div className='flex flex-col'>
-                            {/* <EditMember refetch={refetch} record={record} />
-                            <ViewMember record={record} /> */}
+                            <EditEquipmentCategory refetch={refetch} record={record} />
+                            <ViewEquipmentCategory record={record} />
                             {/* <Popconfirm
                 title={t('delete_the_data')}
                 description={t('confirm_deletion')}
@@ -118,8 +118,8 @@ export default function Role() {
     return (
         <div className='w-full'>
             <div className='flex justify-between items-center px-3'>
-                <p>{t('role')}</p>
-                {/* <AddMember refetch={refetch} /> */}
+                <p>{t('equipment_category')}</p>
+                <AddEquipmentCategory refetch={refetch} />
             </div>
             <Divider className='w-full borer' />
             <div className="lg:px-20 ">

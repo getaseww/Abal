@@ -12,7 +12,7 @@ import { t } from 'i18next';
 import { ColumnsType } from 'antd/es/table/interface';
 import CustomTable from '../../../components/Table/CustomTable.tsx';
 import Search, { SearchProps } from 'antd/es/input/Search';
-import { Role, SMSSTATUS } from '../../../enums/generalEnums.ts';
+import { Role, SMSSTATUS } from '../../../enums/enums.ts';
 import { UserType } from '../../../@types/User';
 
 

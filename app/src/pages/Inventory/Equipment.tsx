@@ -1,40 +1,39 @@
-import React, { useState } from 'react'
-import { userStore } from '../store/userStore'
+import { useState } from 'react'
+import { userStore } from '../../store/userStore'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { deleteData, retrieveData } from '../utils/utils'
+import { deleteData, retrieveData } from '../../utils/utils'
 import { ColumnsType, FilterValue, SorterResult } from 'antd/es/table/interface'
 import { Button, Divider, Popconfirm, Popover, TableProps } from 'antd'
 import toast from 'react-hot-toast'
 import { t } from 'i18next'
 import { format } from 'date-fns'
-import EditMember from '../components/Member/EditMember'
-import ViewMember from '../components/Member/ViewMember'
-import AddMember from '../components/Member/AddMember'
-import CustomTable from '../components/Table/CustomTable'
+import CustomTable from '../../components/Table/CustomTable'
 import { DeleteOutlined } from '@ant-design/icons'
-import { RoleType } from '../@types/Role'
-
-export default function Role() {
+import { EquipmentType } from '../../@types/types'
+import EditEquipment from '../../components/Inventory/Equipment/EditEquipment'
+import ViewEquipment from '../../components/Inventory/Equipment/ViewEquipment'
+import AddEquipment from '../../components/Inventory/Equipment/AddEquipment'
+export default function Equipment() {
     const token = userStore((state: any) => state.token)
     const header = {
         Authorization: `Bearer ${token}`,
     }
 
     const { data, isPending, error, refetch } = useQuery({
-        queryKey: ['main_page_role'],
-        queryFn: () => retrieveData(`role`, header),
+        queryKey: ['main_page_equipment'],
+        queryFn: () => retrieveData(`inventory/equipment`, header),
     })
 
     const [filteredInfo, setFilteredInfo] = useState<Record<string, FilterValue | null>>({});
-    const [sortedInfo, setSortedInfo] = useState<SorterResult<RoleType>>({});
-    const handleChange: TableProps<RoleType>['onChange'] = (pagination, filters, sorter) => {
+    const [sortedInfo, setSortedInfo] = useState<SorterResult<EquipmentType>>({});
+    const handleChange: TableProps<EquipmentType>['onChange'] = (pagination, filters, sorter) => {
         setFilteredInfo(filters);
-        setSortedInfo(sorter as SorterResult<RoleType>);
+        setSortedInfo(sorter as SorterResult<EquipmentType>);
     };
 
 
     const deleteMutation = useMutation({
-        mutationFn: (id: number) => deleteData(`role/${id}`, header),
+        mutationFn: (id: number) => deleteData(`inventory/equipment/${id}`, header),
         onSuccess: () => {
             toast.success(t('deleted_successfully'))
             refetch()
@@ -51,7 +50,7 @@ export default function Role() {
 
 
 
-    const columns: ColumnsType<RoleType> = [
+    const columns: ColumnsType<EquipmentType> = [
         {
             title: `${t('no')}`,
             key: 'index',
@@ -62,6 +61,27 @@ export default function Role() {
             title: t('name'),
             key: 'name',
             dataIndex: "name"
+        },
+        {
+            title: t('model'),
+            key: 'model',
+            dataIndex: "model"
+        },
+        {
+            title: t('price'),
+            key: 'price',
+            dataIndex: "price"
+        },
+        {
+            title: t('purchase_date'),
+            key: 'purchase_date',
+            dataIndex: "purchase_date",
+            render: (val, record) => (
+                <>{format(new Date(val), "yyyy-MM-dd")}</>
+            ),
+            sorter: (a, b) => new Date(a?.purchase_date ?? new Date()).getTime() - new Date(b?.purchase_date ?? new Date()).getTime(),
+            sortOrder: sortedInfo.columnKey === 'purchase_date' ? sortedInfo.order : null,
+
         },
         {
             title: `${t('created_at')}`,
@@ -84,8 +104,8 @@ export default function Role() {
                     key={val}
                     content={
                         <div className='flex flex-col'>
-                            {/* <EditMember refetch={refetch} record={record} />
-                            <ViewMember record={record} /> */}
+                            <EditEquipment refetch={refetch} record={record} />
+                            <ViewEquipment record={record} />
                             {/* <Popconfirm
                 title={t('delete_the_data')}
                 description={t('confirm_deletion')}
@@ -118,8 +138,8 @@ export default function Role() {
     return (
         <div className='w-full'>
             <div className='flex justify-between items-center px-3'>
-                <p>{t('role')}</p>
-                {/* <AddMember refetch={refetch} /> */}
+                <p>{t('equipment')}</p>
+                <AddEquipment refetch={refetch} />
             </div>
             <Divider className='w-full borer' />
             <div className="lg:px-20 ">

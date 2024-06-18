@@ -12,7 +12,7 @@ import CustomTable from '../../../components/Table/CustomTable.tsx';
 import { ColumnsType } from 'antd/es/table/interface';
 import dayjs from 'dayjs';
 import { checkUnicode, putData, retrieveData } from '../../../utils/utils.ts';
-import { Role, SMSSTATUS } from '../../../enums/generalEnums.ts';
+import { Role, SMSSTATUS } from '../../../enums/enums.ts';
 import { UserType } from '../../../@types/User';
 
 

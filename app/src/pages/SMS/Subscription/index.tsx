@@ -12,7 +12,7 @@ import AddSubscription from './AddSubscription.tsx';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import toast from 'react-hot-toast';
-import { Role } from '../../../enums/generalEnums.ts';
+import { Role } from '../../../enums/enums.ts';
 
 
 

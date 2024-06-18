@@ -7,6 +7,8 @@ import SubscriptionFactory, { Subscription } from '../models/Subscription';
 import RoleFactory, { Role } from '../models/Role';
 import ProfileFactory, { Profile } from '../models/Profile';
 import { SMSTables } from '../modules/sms/models';
+import { InventoryTables } from '../modules/Inventory/models';
+
 
 env.config()
 
@@ -28,6 +30,8 @@ export default async () => {
   RoleFactory(sequelize);
   ProfileFactory(sequelize);
   SMSTables(sequelize);
+  InventoryTables(sequelize);
+
 
   User.hasMany(User, { foreignKey: { name: "user_id", allowNull: true } })
   User.belongsTo(User, { foreignKey: { name: "user_id", allowNull: true } })
