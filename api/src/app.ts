@@ -39,6 +39,8 @@ passport.deserializeUser(function (user, done) {
 
 app.use(cors())
 app.use('/images', express.static(path.join(__dirname, "images")));
+app.use(express.static(path.join(__dirname, 'public')));
+
 db();
 
 

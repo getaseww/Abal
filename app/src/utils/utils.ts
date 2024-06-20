@@ -125,7 +125,7 @@ export const validateDates = (start_date: any, end_date: any) => {
 }
 
 
-export const formatNumber = (number: number) => {
+export const formatNumber = (number: any) => {
   if (!number) return 0;
   var options = { style: 'decimal', minimumFractionDigits: 0, maximumFractionDigits: 0 };
   return number.toLocaleString('en-US', options);

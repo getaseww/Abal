@@ -1,0 +1,72 @@
+import { useState } from 'react'
+import { Form, Input, Select } from 'antd';
+import { validatePhoneNumber } from '../../utils/utils';
+import { t } from 'i18next';
+import SidePanel from '../SidePanel';
+import {  EyeOutlined } from '@ant-design/icons';
+import { UserType } from '../../@types/User';
+
+export default function MemberIdCard({ record }: { record: UserType }) {
+    const [form] = Form.useForm();
+    const [open, setOpen] = useState(false);
+
+    return (
+        <div className=''>
+            <SidePanel is_title_row={false} isText={true} open={open} setOpen={setOpen} title={t('view_member')} button_title={<><EyeOutlined /> {t('view')}</>}>
+                <Form onFinish={() => { }}
+                    name="view_member_form"
+                    layout="vertical"
+                    form={form}
+                    initialValues={{ ...record, sex: record?.profile?.sex, address: record?.profile?.address }}
+                // disabled={true}
+                >
+
+                    <Form.Item label={t('first_name')} name="first_name"
+                        rules={[
+                            { required: true, message: t('empty_first_name') }
+                        ]}
+                    >
+                        <Input readOnly className='p-2' />
+                    </Form.Item>
+                    <Form.Item label={t('last_name')} name="last_name"
+                        rules={[
+                            { required: true, message: t('empty_last_name') }
+                        ]}
+                    >
+                        <Input readOnly className='p-2' />
+                    </Form.Item>
+
+                    <Form.Item label={t('phone_number')} name="phone_number"
+                        rules={[
+                            { validator: validatePhoneNumber },
+                            { required: true, message: t('empty_last_name') }
+                        ]}
+                    >
+                        <Input readOnly className='p-2' />
+                    </Form.Item>
+
+                    <Form.Item label={t('sex')} name="sex"
+                        rules={[
+                            { required: true, message: t('select_sex') }
+                        ]}
+                    >
+                        <Select disabled>
+                            <Select.Option key="Male" value="Male">Male</Select.Option>
+                            <Select.Option key="Female" value="Female">Female</Select.Option>
+                        </Select>
+                    </Form.Item>
+
+                    <Form.Item label={t('address')} name="address"
+                    >
+                        <Input readOnly className='p-2' />
+                    </Form.Item>
+
+                    {/* <Button
+                        htmlType="submit"
+                        size='large'
+                        className='bg-[#1F677D] dark:bg-boxdark text-white'
+                    >{t('save')}</Button> */}
+                </Form>
+            </SidePanel>
+        </div>)
+}

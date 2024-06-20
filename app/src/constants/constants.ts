@@ -1,4 +1,4 @@
-export const MAIN_API_URL = import.meta.env.PROD ? "https://newcom.efoyplus.com/api/" : "http://localhost:8000/api/";
+export const MAIN_API_URL = import.meta.env.PROD ? "https://membership.efoyplus.com/api/" : "http://localhost:8000/api/";
 
 
 export const routes = {

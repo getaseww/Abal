@@ -1,6 +1,7 @@
 /api/node_modules
 /api/.env
-
+/api/dist
+/api/*.zip
 # dependencies
 /app/node_modules
 /app/.pnp
@@ -37,3 +38,4 @@
 # typescript
 /app/*.tsbuildinfo
 /app/next-env.d.ts
+/app/*.zip
