@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
 import App from './App';
 import './index.css';
 import './satoshi.css';
@@ -10,6 +10,7 @@ import { I18nextProvider, initReactI18next, useTranslation } from "react-i18next
 import i18next from "i18next";
 import amharicTransalation from './translations/am/translation.json';
 import englishTranslation from './translations/en/translation.json';
+import Loader from './Loader';
 
 
 // import { store } from './app/store';
@@ -36,9 +37,13 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <QueryClientProvider client={queryClient}>
     {/* <Provider store={store}> */}
     <I18nextProvider i18n={i18next}>
-      <Router>
-        <App />
-      </Router>
+      <Suspense fallback={<Loader />}>
+        <Router>
+          <App />
+        </Router>
+      </Suspense>
+
+
     </I18nextProvider>
   </QueryClientProvider>
 );

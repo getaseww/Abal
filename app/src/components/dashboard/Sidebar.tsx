@@ -6,6 +6,7 @@ import { routes } from "../../constants/constants";
 import { userStore } from "../../store/userStore";
 import { Role } from "../../enums/enums";
 import { MenuItemType, MenuType } from "../../@types/types";
+import { Link, NavLink } from "react-router-dom";
 
 export default function Sidebar({ isOpen, toggleSidebar }: { isOpen: boolean, toggleSidebar: any }) {
     const [expandedMenus, setExpandedMenus] = useState<any>({});
@@ -119,11 +120,11 @@ const Menu = ({ title, items, isExpanded, toggleMenu }: { title: string, items: 
                         {items.map((item: any, index: number) => (
                             <>
                                 {
-                                    item.access?.find((role: any) => role == user?.role) && <a href={item.link}>
+                                    item.access?.find((role: any) => role == user?.role) && <Link to={item.link}>
                                         <li key={index} className="py-2">
                                             {item.name}
                                         </li>
-                                    </a>
+                                    </Link>
                                 }
                             </>
                         ))}
@@ -138,11 +139,11 @@ const Menu = ({ title, items, isExpanded, toggleMenu }: { title: string, items: 
 
 const SidebarItem = ({ text, link }: { text: string, link: string }) => {
     return (
-        <a
-            href={link}
+        <Link
+            to={link}
             className="text-black block py-1.5 px-4 rounded transition duration-200 hover:bg-gray-200"
         >
             {text}
-        </a>
+        </Link>
     );
 };
