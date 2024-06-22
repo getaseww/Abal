@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { userStore } from '../store/userStore'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { deleteData, retrieveData } from '../utils/utils'
@@ -13,9 +13,14 @@ import ViewMember from '../components/Member/ViewMember'
 import AddMember from '../components/Member/AddMember'
 import CustomTable from '../components/Table/CustomTable'
 import { DeleteOutlined } from '@ant-design/icons'
+import { languageStore } from '../store/languageStore'
+import ExportToExcel from '../components/Report/ExportToExcel'
 
 export default function Member() {
   const token = userStore((state: any) => state.token)
+  const lang: string = languageStore((state: any) => state.lang)
+
+
   const header = {
     Authorization: `Bearer ${token}`,
   }
@@ -55,7 +60,7 @@ export default function Member() {
     {
       title: `${t('no')}`,
       key: 'index',
-      width:"70px",
+      width: "70px",
       render: (text, record, index) => index + 1,
     },
     {
@@ -127,19 +132,64 @@ export default function Member() {
     },
   ];
 
+  const [memberData, setMemberData] = useState<UserType[]>([]);
+  const [exportData, setExportData] = useState(data);
 
+  useEffect(() => {
+    setMemberData(data);
+  }, [data])
 
+  useEffect(() => {
+    const flattenedData = memberData?.map(item => (
+      lang == "en" ? {
+        "First Name": item.first_name,
+        "Last Name": item?.last_name,
+        "Phone Number": item.phone_number,
+        "Sex": item.profile?.sex,
+        "Address": item.profile?.address,
+        "Created At": format(new Date(item.createdAt), "yyyy-MM-dd"),
+      } :
+        {
+          "የመጀመሪያ ስም": item.first_name,
+          "የአባት ስም": item?.last_name,
+          "ስልክ ቁጥር": item.phone_number,
+          "ጾታ": item.profile?.sex,
+          "አድራሻ": item.profile?.address,
+          "የተመዘገበበት ቀን": format(new Date(item.createdAt), "yyyy-MM-dd"),
+        }
+    ));
+    setExportData(flattenedData)
+  }, [memberData])
 
   return (
     <div className='w-full'>
       <div className='flex justify-between items-center px-3'>
         <p>{t('member')}</p>
-        <AddMember refetch={refetch} />
+        <Popover
+          placement="left"
+          key="member_inex"
+          content={
+            <div className='flex flex-col'>
+              <AddMember refetch={refetch} />
+              <ExportToExcel 
+              button_type='primary' 
+              data={exportData} 
+              file_name={`member-reports${new Date().getTime()}.xlsx`} sheet_name='sheet1' />
+            </div>
+          }
+          trigger="click"
+        >
+          <Button className='border-none text-center' type='text'>
+            <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 128 512" >
+              <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />
+            </svg>
+          </Button>
+        </Popover>
       </div>
       <Divider className='w-full borer' />
       <div className="lg:px-20 ">
         <CustomTable column={columns} data={data} handleChange={handleChange} />
       </div>
     </div>
-    )
+  )
 }

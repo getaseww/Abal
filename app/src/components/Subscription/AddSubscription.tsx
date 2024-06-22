@@ -57,7 +57,7 @@ export default function AddSubscription({ refetch }: { refetch: Function }) {
 
     return (
         <div className='py-2 h-8'>
-            <SidePanel isText={false} open={open} setOpen={setOpen} title={t('subscription')} button_title={<><PlusOutlined />{t('subscription')}</>}>
+            <SidePanel isText={false} open={open} setOpen={setOpen} title={t('subscription')} button_title={<><PlusOutlined className='pr-2'/>{t('add_subscription')}</>}>
                 <Form onFinish={submitData} name="add_subscription_form" layout="vertical" form={form}>
 
                     <Form.Item label={t('member')} name="member_id"

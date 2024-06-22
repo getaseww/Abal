@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { userStore } from '../store/userStore'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { deleteData, formatNumber, retrieveData } from '../utils/utils'
@@ -10,9 +10,14 @@ import { t } from 'i18next'
 import { format } from 'date-fns'
 import AddPayment from '../components/Payment/AddPayment'
 import CustomTable from '../components/Table/CustomTable'
+import { languageStore } from '../store/languageStore'
+import ExportToExcel from '../components/Report/ExportToExcel'
 
 export default function Payment() {
   const token = userStore((state: any) => state.token)
+  const lang: string = languageStore((state: any) => state.lang)
+
+
   const header = {
     Authorization: `Bearer ${token}`,
   }
@@ -145,12 +150,67 @@ export default function Payment() {
   ];
 
 
+  const [paymentData, setPaymentData] = useState<PaymentType[]>([]);
+  const [exportData, setExportData] = useState(data);
+
+  useEffect(() => {
+    setPaymentData(data);
+  }, [data])
+
+  useEffect(() => {
+    const flattenedData = paymentData?.map(item => (
+      lang == "en" ? {
+        "First Name": item.payer?.first_name,
+        "Last Name": item?.payer?.last_name,
+        "Phone Number": item.payer?.phone_number,
+        "Amount": item.amount,
+        "Transaction Reference": item?.trx_ref,
+        "Status": item.status,
+        "Payment Date": format(new Date(item.date), "yyyy-MM-dd"),
+        "Created At": format(new Date(item.createdAt), "yyyy-MM-dd"),
+      } :
+        {
+
+          "የመጀመሪያ ስም": item.payer?.first_name,
+          "የአባት ስም": item?.payer?.last_name,
+          "ስልክ ቁጥር": item.payer?.phone_number,
+          "ዋጋ በብር": item.amount,
+          "የንግድ ውል መገበያያ": item?.trx_ref,
+          "ሁኔታ": item.status,
+          "የክፍያ ቀን": format(new Date(item.date), "yyyy-MM-dd"),
+          "የተመዘገበበት ቀን": format(new Date(item.createdAt), "yyyy-MM-dd"),
+        }
+    ));
+    setExportData(flattenedData)
+  }, [paymentData])
+
+
+
 
   return (
     <div className='w-full'>
       <div className='flex justify-between items-center px-3'>
         <p>{t('payment')}</p>
-        <AddPayment refetch={refetch} />
+        <Popover
+          placement="left"
+          key="member_inex"
+          content={
+            <div className='flex flex-col'>
+              <AddPayment refetch={refetch} />
+              <ExportToExcel
+                button_type='primary'
+                data={exportData}
+                file_name={`payment-reports${new Date().getTime()}.xlsx`} sheet_name='sheet1' />
+            </div>
+          }
+          trigger="click"
+        >
+          <Button className='border-none text-center' type='text'>
+            <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 128 512" >
+              <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />
+            </svg>
+          </Button>
+        </Popover>
       </div>
       <Divider className='w-full borer' />
       <div className="lg:px-20 ">

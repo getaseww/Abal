@@ -63,7 +63,7 @@ class RoleController {
 
         RoleService.findAll(query)
             .then((result: Role[]) => {
-                response.status(200).json(result)
+                response.status(200).json({ status: "success", data: result, message: "fetched successfully!" })
             })
             .catch((error: Error) => {
                 response.status(error.statusCode).json({ "error": error.errorCode, "message": error.message });

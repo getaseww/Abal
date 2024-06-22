@@ -48,7 +48,7 @@ export default function AddEquipment({ refetch }: { refetch: Function }) {
 
 
     return (
-        <div className='py-2 h-8'> <SidePanel isText={false} open={open} setOpen={setOpen} title={t('equipment')} button_title={<><PlusOutlined />{t('equipment')}</>}>
+        <div className='py-2 h-8'> <SidePanel isText={false} open={open} setOpen={setOpen} title={t('equipment')} button_title={<><PlusOutlined className='pr-2'/>{t('add_equipment')}</>}>
             <Form onFinish={submitData} name="add_equipment_form"
                 layout="vertical" form={form}>
 

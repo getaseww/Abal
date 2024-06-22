@@ -7,6 +7,7 @@ export class User extends Model {
   public id!: number;
   public first_name!: string;
   public last_name!: string;
+  public company_category!: string;
   public phone_number!: string;
   public password!: string;
   public role_id!: string;
@@ -30,10 +31,13 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-
       last_name: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
+      },
+      company_category: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       phone_number: {
         type: DataTypes.STRING,

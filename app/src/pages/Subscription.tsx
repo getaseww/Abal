@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { userStore } from '../store/userStore'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { deleteData, retrieveData } from '../utils/utils'
@@ -14,10 +14,15 @@ import AddSubscription from '../components/Subscription/AddSubscription'
 import EditSubscription from '../components/Subscription/EditSubscription'
 import ViewSubscription from '../components/Subscription/ViewSubscription'
 import { DeleteOutlined } from '@ant-design/icons'
+import { languageStore } from '../store/languageStore'
+import ExportToExcel from '../components/Report/ExportToExcel'
 
 
 export default function Subscription() {
   const token = userStore((state: any) => state.token)
+  const lang: string = languageStore((state: any) => state.lang)
+
+
   const header = {
     Authorization: `Bearer ${token}`,
   }
@@ -134,13 +139,61 @@ export default function Subscription() {
   ];
 
 
+  const [subscriptionData, setSubscriptionData] = useState<SubscriptionType[]>([]);
+  const [exportData, setExportData] = useState(data);
+
+  useEffect(() => {
+    setSubscriptionData(data);
+  }, [data])
+
+  useEffect(() => {
+    const flattenedData = subscriptionData?.map(item => (
+      lang == "en" ? {
+        "First Name": item.subscriber?.first_name,
+        "Last Name": item?.subscriber?.last_name,
+        "Phone Number": item.subscriber?.phone_number,
+        "Start Date": format(new Date(item.start_date), "yyyy-MM-dd"),
+        "End Date": format(new Date(item.end_date), "yyyy-MM-dd"),
+        "Created At": format(new Date(item.createdAt), "yyyy-MM-dd"),
+      } :
+        {
+          "የመጀመሪያ ስም": item.subscriber?.first_name,
+          "የአባት ስም": item?.subscriber?.last_name,
+          "ስልክ ቁጥር": item.subscriber?.phone_number,
+          "የመጀመሪያ ቀን": format(new Date(item.start_date), "yyyy-MM-dd"),
+          "የመጨረሻ ቀን": format(new Date(item.end_date), "yyyy-MM-dd"),
+          "የተመዘገበበት ቀን": format(new Date(item.createdAt), "yyyy-MM-dd"),
+        }
+    ));
+    setExportData(flattenedData)
+  }, [subscriptionData])
+
 
 
   return (
     <div className='w-full'>
       <div className='flex justify-between items-center px-3'>
         <p>{t('subscription')}</p>
-        <AddSubscription refetch={refetch} />
+        <Popover
+          placement="left"
+          key="member_inex"
+          content={
+            <div className='flex flex-col'>
+              <AddSubscription refetch={refetch} />
+              <ExportToExcel
+                button_type='primary'
+                data={exportData}
+                file_name={`subscription-reports${new Date().getTime()}.xlsx`} sheet_name='sheet1' />
+            </div>
+          }
+          trigger="click"
+        >
+          <Button className='border-none text-center' type='text'>
+            <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 128 512" >
+              <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />
+            </svg>
+          </Button>
+        </Popover>
       </div>
       <Divider className='w-full borer' />
       <div className="lg:px-20 ">

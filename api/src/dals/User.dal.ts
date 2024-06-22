@@ -87,7 +87,7 @@ class UserDal {
                 if (payload.first_name) user.first_name = payload.first_name;
                 if (payload.last_name) user.last_name = payload.last_name;
                 if (payload.phone_number) user.phone_number = payload.phone_number;
-
+                if (payload.company_category) user.company_category = payload.company_category;
 
                 user.save()
                     .then((result: User) => {

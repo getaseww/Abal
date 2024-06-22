@@ -24,7 +24,7 @@ export default function Sidebar({ isOpen, toggleSidebar }: { isOpen: boolean, to
             title: 'Inventory',
             access: [Role.ADMIN, Role.OWNER],
             items: [
-                { name: 'Locations', link: routes.INVENTORY_LOCATION, access: [Role.OWNER, Role.ADMIN] },
+                // { name: 'Locations', link: routes.INVENTORY_LOCATION, access: [Role.OWNER, Role.ADMIN] },
                 { name: 'Equipments', link: routes.INVENTORY_EQUIPMENT, access: [Role.OWNER, Role.ADMIN] }
             ]
         },
@@ -35,6 +35,14 @@ export default function Sidebar({ isOpen, toggleSidebar }: { isOpen: boolean, to
                 { name: "Package", link: routes.SMS_PACKAGE, access: [Role.ADMIN] },
                 { name: "Subscription", link: routes.SMS_SUBSCRIPTION, access: [Role.ADMIN, Role.OWNER] },
                 { name: "Content", link: routes.SMS_CONTENT, access: [Role.ADMIN, Role.OWNER] },
+            ]
+        },
+        {
+            title: "SMS Report",
+            access: [Role.ADMIN, Role.OWNER],
+            items: [
+                { name: "Content Report", link: routes.SMS_CONTENT_REPORT, access: [Role.OWNER, Role.ADMIN] },
+                { name: "Subscription Report", link: routes.SMS_SUBSCRIPTION_REPORT, access: [Role.ADMIN, Role.OWNER] },
             ]
         },
         {
@@ -62,7 +70,7 @@ export default function Sidebar({ isOpen, toggleSidebar }: { isOpen: boolean, to
             <nav className="mt-6">
                 <SidebarItem text="Dashboard" link={routes.DASHBOARD} />
                 {user?.role == "Admin" &&
-                    <SidebarItem text="Users" link={routes.MEMBER} />
+                    <SidebarItem text="Users" link={routes.USER} />
                 }
                 {
                     user?.role == Role.OWNER
@@ -104,7 +112,7 @@ const Menu = ({ title, items, isExpanded, toggleMenu }: { title: string, items: 
     const user: any = JSON.parse(userStore((state: any) => state.user))
 
     return (
-        <div className="bg-white   overflow-hidden mb-4">
+        <div className="bg-white   overflow-hidden">
             <div
                 onClick={toggleMenu}
                 className="w-full px-4 py-2 text-left flex items-center justify-between bg-blue-500 text-black focus:outline-none"

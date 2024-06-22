@@ -78,7 +78,7 @@ export default function AddPayment({ refetch }: { refetch: Function }) {
 
     return (
         <div className='py-2 h-8'>
-            <SidePanel isText={false} open={open} setOpen={setOpen} title={t('payment')} button_title={<><PlusOutlined />{t('payment')}</>}>
+            <SidePanel isText={false} open={open} setOpen={setOpen} title={t('payment')} button_title={<><PlusOutlined className='pr-2'/>{t('add_payment')}</>}>
                 <Form
                     onFinish={submitData}
                     name="add_payment_form"

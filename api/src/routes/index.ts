@@ -14,7 +14,7 @@ const routes = (app: Application) => {
     SMSRoutes(app);
     InventoryRoutes(app);
     app.use("/api/user", UserRoutes);
-    app.use("/api/role", RoleRoutes);
+    app.use("/api/role", authenticateHeader, RoleRoutes);
     app.use("/api/membership-plan", authenticateHeader, MembershipPlanRoutes);
     app.use("/api/subscription", authenticateHeader, SubscriptionRoutes);
     app.use("/api/payment", authenticateHeader, PaymentRoutes);

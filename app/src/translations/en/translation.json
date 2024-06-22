@@ -980,5 +980,6 @@
     "edit_equipment":"edit_equipment",
     "equipment_category":"equipment_category",
     "edit_equipment_category":"edit_equipment_category",
-    "view_equipment_category":"view_equipment_category"
+    "view_equipment_category":"view_equipment_category",
+    "company_category":"Company Category"
 }

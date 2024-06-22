@@ -8,20 +8,29 @@ import toast from 'react-hot-toast';
 import { t } from 'i18next'
 import TextArea from 'antd/es/input/TextArea';
 import { PlusOutlined } from '@ant-design/icons';
+import { Role } from '../../enums/enums';
+import { COMPANY_CATEGORY } from '../../constants/constants';
 
-export default function AddMember({ refetch }: { refetch: Function }) {
+export default function AddUser({ refetch }: { refetch: Function }) {
 
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
     const token = userStore((state: any) => state.token)
-
+    const [role, setRole] = useState()
     const header = {
         Authorization: `Bearer ${token}`,
     }
 
+    const { data: roleData, isPending, error } = useQuery({
+        queryKey: ['user_page_role'],
+        queryFn: () => retrieveData(`role`, header),
+    })
+
+
+
     const postMutation = useMutation(
         {
-            mutationFn: (data: any) => postData(`user/member/create`, data, header),
+            mutationFn: (data: any) => postData(`user/create`, data, header),
             onSuccess: () => {
                 toast.success(t('created_successfully'))
                 setOpen(false);
@@ -36,17 +45,15 @@ export default function AddMember({ refetch }: { refetch: Function }) {
 
     const submitData = (value: any) => {
         const data = {
-            user: { ...value },
-            profile: { sex: value.sex, address: value.address }
+            ...value
         }
         postMutation.mutate(data);
     };
 
 
     return (
-        <div className='py-2 my-2 h-8'> <SidePanel isText={true} open={open} setOpen={setOpen} title={t('member')} button_title={<><PlusOutlined className='mr-2'/>{t('add_member')}</>}>
-            <Form onFinish={submitData} name="add_member_form" layout="vertical" form={form}>
-
+        <div className='py-2 my-2 h-8'> <SidePanel isText={true} open={open} setOpen={setOpen} title={t('user')} button_title={<><PlusOutlined className='mr-2' />{t('add_user')}</>}>
+            <Form onFinish={submitData} name="add_user_form" layout="vertical" form={form}>
                 <Form.Item label={t('first_name')} name="first_name"
                     rules={[
                         { required: true, message: t('empty_first_name') }
@@ -61,7 +68,6 @@ export default function AddMember({ refetch }: { refetch: Function }) {
                 >
                     <Input className='p-2' />
                 </Form.Item>
-
                 <Form.Item label={t('phone_number')} name="phone_number"
                     rules={[
                         { validator: validatePhoneNumber },
@@ -70,25 +76,33 @@ export default function AddMember({ refetch }: { refetch: Function }) {
                 >
                     <Input className='p-2' />
                 </Form.Item>
-
-                <Form.Item label={t('sex')} name="sex"
+                <Form.Item label={t('role')} name="role_id"
                     rules={[
-                        { required: true, message: t('select_sex') }
+                        { required: true, message: t('empty_role') }
                     ]}
                 >
-                    <Select>
-                        <Select.Option key="Male" value="Male">Male</Select.Option>
-                        <Select.Option key="Female" value="Female">Female</Select.Option>
+                    <Select 
+                    onChange={(e) => setRole(e)}
+                    >
+                        {!isPending && roleData?.map((role) => (
+                            <Select.Option key={role.id} value={role.id} >{role.name}</Select.Option>
+                        ))}
                     </Select>
                 </Form.Item>
+                {role && role == 2 &&
 
-
-
-                <Form.Item label={t('address')} name="address"
-                >
-                    <Input className='p-2' />
-                </Form.Item>
-
+                    <Form.Item label={t('category')} name="company_category"
+                        rules={[
+                            { required: true, message: t('empty_category') }
+                        ]}
+                    >
+                        <Select>
+                            {COMPANY_CATEGORY?.map((item) => (
+                                <Select.Option key={item} value={item}>{item}</Select.Option>
+                            ))}
+                        </Select>
+                    </Form.Item>
+                }
                 <Button
                     htmlType="submit"
                     size='large'

@@ -45,7 +45,7 @@ export default function AddMembershipPlan({ refetch }: { refetch: Function }) {
 
     return (
         <div className='py-2 h-8'>
-            <SidePanel isText={false} open={open} setOpen={setOpen} title={t('membership_plan')} button_title={<><PlusOutlined />{t('membership_plan')}</>}>
+            <SidePanel isText={true} open={open} setOpen={setOpen} title={t('membership_plan')} button_title={<><PlusOutlined className='mr-2'/>{t('add_membership_plan')}</>}>
                 <Form onFinish={submitData} name="form_item_path" layout="vertical" form={form}>
 
                     <Form.Item label={t('name')} name="name"

@@ -12,6 +12,7 @@ import { routes } from './constants/constants';
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const DefaultLayout = lazy(() => import('./layouts/DefaultLayout'));
 const Role = lazy(() => import('./pages/Role'));
+const User = lazy(() => import('./pages/User'));
 
 const MembershipPlan = lazy(() => import('./pages/MembershipPlan'));
 const Subscription = lazy(() => import('./pages/Subscription'));
@@ -23,6 +24,9 @@ const SMSSubscription = lazy(() => import('./pages/SMS/Subscription'));
 
 const EquipmentCategory = lazy(() => import('./pages/Inventory/EquipmentCategory'));
 const Equipment = lazy(() => import('./pages/Inventory/Equipment'));
+
+const SMSSubscriptionReport = lazy(() => import('./pages/Report/SMSSubscription'));
+const SMSContentReport = lazy(() => import('./pages/Report/SMSContent'));
 
 
 function App() {
@@ -56,6 +60,8 @@ function App() {
 
         <Route element={<DefaultLayout />}>
           <Route path="/" element={token != null && token != undefined ? <Dashboard /> : <Navigate to="/auth/login" replace={true} />} />
+          <Route path={routes.USER} element={token != null && token != undefined ? <User /> : <Navigate to="/auth/login" replace={true} />} />
+
           <Route path="/dashboard/membership-plan" element={token != null && token != undefined ? <MembershipPlan /> : <Navigate to="/auth/login" replace={true} />} />
           <Route path="/dashboard/subscription" element={token != null && token != undefined ? <Subscription /> : <Navigate to="/auth/login" replace={true} />} />
           <Route path="/dashboard/member" element={token != null && token != undefined ? <Member /> : <Navigate to="/auth/login" replace={true} />} />
@@ -71,6 +77,11 @@ function App() {
           <Route path={routes.INVENTORY_EQUIPMENT} element={token != null && token != undefined ? <Equipment /> : <Navigate to="/auth/login" replace={true} />} />
           {/* <Route path="/dashboard/inventory/" element={token != null && token != undefined ? <SMSSubscription /> : <Navigate to="/auth/login" replace={true} />} /> */}
 
+
+          {/* report routes */}
+
+          <Route path={routes.SMS_CONTENT_REPORT} element={token != null && token != undefined ? <SMSContentReport /> : <Navigate to="/auth/login" replace={true} />} />
+          <Route path={routes.SMS_SUBSCRIPTION_REPORT} element={token != null && token != undefined ? <SMSSubscriptionReport /> : <Navigate to="/auth/login" replace={true} />} />
 
         </Route>
       </Routes>

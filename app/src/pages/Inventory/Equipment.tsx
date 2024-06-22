@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { userStore } from '../../store/userStore'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { deleteData, retrieveData } from '../../utils/utils'
@@ -13,8 +13,13 @@ import { EquipmentType } from '../../@types/types'
 import EditEquipment from '../../components/Inventory/Equipment/EditEquipment'
 import ViewEquipment from '../../components/Inventory/Equipment/ViewEquipment'
 import AddEquipment from '../../components/Inventory/Equipment/AddEquipment'
+import { languageStore } from '../../store/languageStore'
+import ExportToExcel from '../../components/Report/ExportToExcel'
 export default function Equipment() {
     const token = userStore((state: any) => state.token)
+    const lang: string = languageStore((state: any) => state.lang)
+
+
     const header = {
         Authorization: `Bearer ${token}`,
     }
@@ -47,8 +52,6 @@ export default function Equipment() {
     const handleDelete = (id: number) => {
         deleteMutation.mutate(id);
     }
-
-
 
     const columns: ColumnsType<EquipmentType> = [
         {
@@ -132,6 +135,45 @@ export default function Equipment() {
         },
     ];
 
+    const [equipmentData, setEquipmentData] = useState<EquipmentType[]>([]);
+    const [exportData, setExportData] = useState(data);
+
+    useEffect(() => {
+        setEquipmentData(data);
+    }, [data])
+
+    useEffect(() => {
+        const flattenedData = equipmentData?.map(item => (
+            lang == "en" ? {
+                "Name": item.name,
+                "Category": item?.equipment_category.name,
+                "Brand": item?.brand,
+                "Model": item?.model,
+                "Serial Number": item?.serial_number,
+                "Puchase Date": format(new Date(item.purchase_date), "yyyy-MM-dd"),
+                "Price": item.price,
+                "Location": item.location,
+                "Status": item.status,
+                "Condition": item.condition,
+                "Created At": format(new Date(item.createdAt), "yyyy-MM-dd"),
+            } :
+                {
+                    "የመሳሪያ ስም": item.name,
+                    "ምድብ": item?.equipment_category.name,
+                    "ዓይነት": item?.brand,
+                    "ሞዴል": item?.model,
+                    "መለያ ቁጥር": item?.serial_number,
+                    "የተገዛበት ቀን": format(new Date(item.purchase_date), "yyyy-MM-dd"),
+                    "ዋጋ": item.price,
+                    "መደብር": item.location,
+                    "ሁኔታ": item.status,
+                    "ሁኔታ 2": item.condition,
+                    "የተመዘገበበት ቀን": format(new Date(item.createdAt), "yyyy-MM-dd"),
+                }
+        ));
+        setExportData(flattenedData)
+    }, [equipmentData])
+
 
 
 
@@ -139,7 +181,27 @@ export default function Equipment() {
         <div className='w-full'>
             <div className='flex justify-between items-center px-3'>
                 <p>{t('equipment')}</p>
-                <AddEquipment refetch={refetch} />
+
+                <Popover
+                    placement="left"
+                    key="member_inex"
+                    content={
+                        <div className='flex flex-col'>
+                            <AddEquipment refetch={refetch} />
+                            <ExportToExcel
+                                button_type='primary'
+                                data={exportData}
+                                file_name={`inventory-equipment-reports${new Date().getTime()}.xlsx`} sheet_name='sheet1' />
+                        </div>
+                    }
+                    trigger="click"
+                >
+                    <Button className='border-none text-center' type='text'>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 128 512" >
+                            <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />
+                        </svg>
+                    </Button>
+                </Popover>
             </div>
             <Divider className='w-full borer' />
             <div className="lg:px-20 ">
