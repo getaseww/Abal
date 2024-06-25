@@ -27,7 +27,7 @@ const SMSContentReport: React.FC = () => {
 
     const { data, isPending, error, refetch } = useQuery({
         queryKey: ['sms-content-report'],
-        queryFn: () => retrieveData(`content?name=${query}`, header),
+        queryFn: () => retrieveData(`sms/content?name=${query}`, header),
     })
 
 

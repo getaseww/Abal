@@ -28,7 +28,7 @@ const SMSSubscriptionReport: React.FC = () => {
 
     const { data, isPending, error, refetch } = useQuery({
         queryKey: ['sms-subscription-report'],
-        queryFn: () => retrieveData(`sms-subscription?name=${query}`, header),
+        queryFn: () => retrieveData(`sms/subscription?name=${query}`, header),
     })
 
 

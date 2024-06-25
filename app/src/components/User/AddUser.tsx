@@ -76,6 +76,14 @@ export default function AddUser({ refetch }: { refetch: Function }) {
                 >
                     <Input className='p-2' />
                 </Form.Item>
+                <Form.Item label={t('password')} name="password"
+                    rules={[
+                        // { validator: validatePhoneNumber },
+                        { required: true, message: t('empty_password') }
+                    ]}
+                >
+                    <Input className='p-2' />
+                </Form.Item>
                 <Form.Item label={t('role')} name="role_id"
                     rules={[
                         { required: true, message: t('empty_role') }

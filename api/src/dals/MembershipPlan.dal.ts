@@ -55,7 +55,8 @@ class MembershipPlanDal {
     update = (membership_plan: MembershipPlan, payload: any) => {
         return new Promise((resolve, reject) => {
             if (membership_plan) {
-                if (payload.name) membership_plan.name = payload.name;
+                if (payload.name) membership_plan.name = payload.name;                if (payload.name) membership_plan.name = payload.name;
+                if (payload.duration) membership_plan.duration = payload.duration;
                 if (payload.description) membership_plan.description = payload.description;
                 if (payload.max_member) membership_plan.max_member = payload.max_member;
                 if (payload.price) membership_plan.price = payload.price;

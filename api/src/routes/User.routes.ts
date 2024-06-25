@@ -12,7 +12,7 @@ router.post("/register", UserController.create, generateToken, response)
 
     .get("/:id", authenticateHeader,UserController.findById)
 
-    .put("/", authenticateHeader,UserController.update)
+    .put("/:id", authenticateHeader,UserController.update)
 
     .delete("/:id", authenticateHeader,UserController.remove)
 

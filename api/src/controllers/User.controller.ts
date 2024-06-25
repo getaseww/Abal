@@ -141,7 +141,7 @@ class UserController {
         const schema = z.object({
             id: z.number(),
         })
-        const result = schema.safeParse(id)
+        const result = schema.safeParse({id})
         if (!result.success) {
             response.status(404).json(result);
         }

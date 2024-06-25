@@ -46,6 +46,7 @@ export default function EditMember({ record, refetch }: { record: UserType, refe
     };
 
 
+    console.log("edit record",record)
     return (
         <div className=''>
             <SidePanel is_title_row={false} isText={true} open={open} setOpen={setOpen} title={t('edit_member')} button_title={<><EditOutlined /> {t('edit')}</>}>
@@ -53,9 +54,8 @@ export default function EditMember({ record, refetch }: { record: UserType, refe
                     name="edit_member_form"
                     layout="vertical"
                     form={form}
-                    initialValues={{ ...record }}
+                    initialValues={{ ...record,sex:record.profile?.sex,address:record?.profile?.address }}
                 >
-
                     <Form.Item label={t('first_name')} name="first_name"
                         rules={[
                             { required: true, message: t('empty_first_name') }

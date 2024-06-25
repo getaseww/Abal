@@ -77,10 +77,10 @@ class EquipmentCategoryController {
                 ...query, user_id: request.query.user_id
             }
         }
-        else if (user.role == Role.OWNER)
-            query = {
-                ...query, user_id: user.id
-            }
+        // else if (user.role == Role.OWNER)
+        //     query = {
+        //         ...query, user_id: user.id
+        //     }
         EquipmentCategoryService.findAll(query)
             .then((result: EquipmentCategory) => {
                 response.status(200).json({ status: "success", data: result, message: "Equipment Category fetched successfully!" })

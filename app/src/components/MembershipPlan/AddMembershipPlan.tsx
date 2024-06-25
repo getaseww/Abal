@@ -79,7 +79,7 @@ export default function AddMembershipPlan({ refetch }: { refetch: Function }) {
                             { required: true, message: t('empty_price') }
                         ]}
                     >
-                        <InputNumber max={7} min={1} className='p-1 w-full'/>
+                        <InputNumber  className='p-1 w-full'/>
                     </Form.Item>
                     <Form.Item label={t('max_member')} name="max_member"
                     >

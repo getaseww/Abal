@@ -12,6 +12,7 @@ import { languageStore } from '../store/languageStore'
 import AddUser from '../components/User/AddUser'
 import ExportToExcel from '../components/Report/ExportToExcel'
 import CustomTable from '../components/Table/CustomTable'
+import EditUser from '../components/User/EditUser'
 
 export default function User() {
     const token = userStore((state: any) => state.token)
@@ -104,6 +105,7 @@ export default function User() {
                     key={val}
                     content={
                         <div className='flex flex-col'>
+                            <EditUser record={record} refetch={refetch} />
                             {/* <EditMember refetch={refetch} record={record} /> */}
                             {/* <ViewMember record={record} /> */}
                             {/* <Popconfirm

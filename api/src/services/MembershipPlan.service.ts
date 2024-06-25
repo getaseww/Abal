@@ -15,7 +15,6 @@ class MembershipPlanService {
                                 done(error, null)
                             })
                     } else {
-
                         MembershipPlanDal.create(payload)
                             .then((result) => done(null, result))
                             .catch((error) => {

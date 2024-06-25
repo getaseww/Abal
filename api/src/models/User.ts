@@ -77,4 +77,16 @@ export default (sequelize: Sequelize) => {
     }
   });
 
+  User.beforeUpdate((user, options) => {
+    if (user.changed("password")) {
+      return hashPassword(user.password)
+        .then((hashed) => {
+          user.password = hashed;
+        })
+        .catch((error) => {
+          throw new error;
+        });
+    }
+  });
+
 };
